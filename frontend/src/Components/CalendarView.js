@@ -7,6 +7,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+
 export const MONTHS = {
     JANUARY: "January",
     FEBRUARY : "February",
@@ -49,7 +50,7 @@ export default function CalendarView () {
             <h2 class="title">Welcome to the Calendar Manager. Here, you can manage all of your birthdays
                 in a convenient calendar view.
             </h2>
-            <div class="menu">
+            <div style={{float:'center', marginLeft: 'auto', marginRight: 'auto'}} >
                 <h1>{selectedMonth}</h1>
                 <Menu anchorEl={anchorEl} open={open}>   
                     <MenuItem selected={selectedMonth===MONTHS.JANUARY} onClick={(event)=>handleMonthSelect(event)}>January</MenuItem>
