@@ -2,6 +2,7 @@ package com.budgeter.server;
 import com.budgeter.server.Entities.Budget;
 import org.springframework.web.bind.annotation.*;
 
+//LOMBOK
 @RestController
 public class BudgetController {
 
