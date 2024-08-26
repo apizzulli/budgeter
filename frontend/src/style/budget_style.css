@@ -4,19 +4,17 @@
     background-color: rgb(39, 48, 61);
     display: flex;
     flex-direction: column;
-    margin-top: 2%;
+    margin-top: 5%;
     row-gap: 10px;
     align-items: center;
     justify-content: center;
 }
 .input-container{
-    width: 80%;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    column-gap: 5%;
-    row-gap: 25px;
-    flex-direction: row;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
     justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
 }
