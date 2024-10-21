@@ -31,8 +31,8 @@ export default function Budget(){
     const [ anchorEl, setAnchorEl ] = useState(null);
     const [ budgetCreated, setBudgetCreated ] = useState(false);
     const [ categories, setCategories ] = useState([]);
-    const [ menuItem, setMenuItem ] = useState("");
-    const categoryList = [];
+    const [ menuItem, setMenuItem ] = useState("Select");
+    const [ amount, setAmount ] = useState("");
     let open = Boolean(anchorEl);
 
     const handleMenuOpen = (event) => {
@@ -43,26 +43,24 @@ export default function Budget(){
         setAnchorEl(null);
     }
 
+    const handleInput = (input) =>{
+        setAmount(input.currentTarget.value);
+    }
+
     const menuClick = (chosenCategory) => {
         setMenuItem(chosenCategory);
         setAnchorEl(null);
     }
 
     const addCategory = (event)=> {
-        let newCat = new Category(menuItem, event.currentTarget.form.amount.value);
+        event.preventDefault();
+        let newCat = new Category(menuItem, amount);
         let newCats = categories;
-        // for (let i = 0; i < categories.length; i++) {
-        //     // note: we are adding a key prop here to allow react to uniquely identify each
-        //     // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-        //     categoryList.push(
-        //                         <div key={i} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
-        //                             categories[i].name + " " + categories[i].amount
-        //                         </div>
-        //                     );
-        // }
         newCats.push(newCat);
         setCategories(newCats);
-        setAnchorEl(null);
+        setAmount("");
+        setMenuItem("Select");
+        event.target.reset();
     }
 
     const createBudget = (event) => {
@@ -87,13 +85,12 @@ export default function Budget(){
         <div style={{width: '100vw'}}>
             <h1>Create Your Budget</h1>
             <div style={{display: budgetCreated ? 'none': 'block'}} className="form-container">
-                    <h2>Fill out information</h2>
                     <form>
                         <div style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center'}}>
                             <Input name="budget-name" sx={{width: 200}} placeholder="Budget Name" required></Input>
                             <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>
                         </div>
-                        <div style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{categories.map((category,i) => <h3 key={category.name+i}>{category.name + ": $" + category.amount}</h3>)}</div>
+                        {categories.map((cat,i) => <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
                         <Button onClick={createBudget} variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
                     </form>
                     <div style={{width: '100%', marginTop:'1%'}}>
@@ -106,15 +103,15 @@ export default function Budget(){
                         </Menu>
                         <div style={{display: 'flex', alignItems:'center', justifyContent:'center', width:'100%'}}>
                             <div style={{display: 'flex', alignItems:'center'}}>
-                                <h3>Category: {menuItem}</h3>
+                                <h3>{"Category: "+menuItem}</h3>
                                 <ArrowDropDownIcon style={{display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
                                 <ArrowDropUpIcon style={{display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>
                             </div>
                         </div>
                     </div>
-                    <form style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
-                            <Input name="amount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
-                            <Button onClick={addCategory} variant = "outlined" style={{color:'white'}}>Add Category</Button>
+                    <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
+                            <Input onChange={handleInput} type="text" name="amount" sx={{width:200, height: 20}} placeholder="Amount" required>{amount}</Input>
+                            <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
                     </form>
             </div>
             <div style={{display: budgetCreated ? 'block' : 'none'}}>
