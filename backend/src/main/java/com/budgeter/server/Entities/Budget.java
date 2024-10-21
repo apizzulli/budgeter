@@ -12,15 +12,15 @@ import java.util.List;
 public class Budget {
 
     private @Id @GeneratedValue Long id;
-    private List<Category> categories;
-    private double total;
     private String name;
+    private double total;
+    private List<Category> categories;
 
     public Budget() {}
-    public Budget(List<Category> categories, String name, double total){
-        this.categories = categories;
+    public Budget(String name, double total, List<Category> categories){
         this.name = name;
         this.total = total;
+        this.categories = categories;
     }
 
     public void setId(Long id){

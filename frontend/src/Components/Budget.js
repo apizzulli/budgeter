@@ -12,9 +12,9 @@ function Category(name, amount){
     this.amount = amount;
 }
 
-function BudgetObj(name,amount,categories) {
+function BudgetObj(name,total,categories) {
     this.name = name;
-    this.amount = amount;
+    this.total = total;
     this.categories = categories;
 }
 
@@ -32,7 +32,6 @@ export default function Budget(){
     const [ budgetCreated, setBudgetCreated ] = useState(false);
     const [ categories, setCategories ] = useState([]);
     const [ menuItem, setMenuItem ] = useState("Select");
-    const [ amount, setAmount ] = useState("");
     let open = Boolean(anchorEl);
 
     const handleMenuOpen = (event) => {
@@ -43,28 +42,24 @@ export default function Budget(){
         setAnchorEl(null);
     }
 
-    const handleInput = (input) =>{
-        setAmount(input.currentTarget.value);
-    }
-
     const menuClick = (chosenCategory) => {
         setMenuItem(chosenCategory);
         setAnchorEl(null);
     }
 
     const addCategory = (event)=> {
+        const amount = event.currentTarget.catAmount.value;
         event.preventDefault();
         let newCat = new Category(menuItem, amount);
         let newCats = categories;
         newCats.push(newCat);
         setCategories(newCats);
-        setAmount("");
         setMenuItem("Select");
         event.target.reset();
     }
 
     const createBudget = (event) => {
-        const newBudg = new BudgetObj(event.currentTarget.form.name.value, event.currentTarget.form.amount.value, categories);
+        const newBudg = new BudgetObj(event.currentTarget.form.budgetName.value, event.currentTarget.form.total.value, categories);
         fetch('http://localhost:8080/createBudget',
         {
             headers: {
@@ -87,7 +82,7 @@ export default function Budget(){
             <div style={{display: budgetCreated ? 'none': 'block'}} className="form-container">
                     <form>
                         <div style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center'}}>
-                            <Input name="budget-name" sx={{width: 200}} placeholder="Budget Name" required></Input>
+                            <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
                             <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>
                         </div>
                         {categories.map((cat,i) => <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
@@ -110,7 +105,7 @@ export default function Budget(){
                         </div>
                     </div>
                     <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
-                            <Input onChange={handleInput} type="text" name="amount" sx={{width:200, height: 20}} placeholder="Amount" required>{amount}</Input>
+                            <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
                             <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
                     </form>
             </div>
