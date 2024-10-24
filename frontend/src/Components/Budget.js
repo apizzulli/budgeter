@@ -59,6 +59,15 @@ export default function Budget(){
     }
 
     const createBudget = (event) => {
+        event.preventDefault();
+        let sum = 0;
+        for(let i = 0; i < categories.length; i++){
+            let s = parseInt(categories[i].amount);
+            sum+=s;
+        }
+        if(sum != event.currentTarget.form.total.value){
+
+        }
         const newBudg = new BudgetObj(event.currentTarget.form.budgetName.value, event.currentTarget.form.total.value, categories);
         fetch('http://localhost:8080/createBudget',
         {
@@ -80,13 +89,14 @@ export default function Budget(){
         <div style={{width: '100vw'}}>
             <h1>Create Your Budget</h1>
             <div style={{display: budgetCreated ? 'none': 'block'}} className="form-container">
-                    <form>
+                    <form onSubmit={createBudget}>
                         <div style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center'}}>
                             <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
                             <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>
                         </div>
+                        <h3>Categories</h3>
                         {categories.map((cat,i) => <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
-                        <Button onClick={createBudget} variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
+                        <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
                     </form>
                     <div style={{width: '100%', marginTop:'1%'}}>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
