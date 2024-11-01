@@ -1,23 +1,31 @@
 package com.budgeter.server.Entities;
 
 import com.budgeter.server.Category;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="Budget")
-public class Budget {
+@JsonSerialize
+@JsonDeserialize
+public class Budget implements Serializable {
 
     private @Id @GeneratedValue Long id;
     private String name;
     private double total;
-    private List<Category> categories;
+    @ElementCollection
+    private Map<String, Double> categories;
 
     public Budget() {}
-    public Budget(String name, double total, List<Category> categories){
+    @JsonCreator
+    public Budget(String name, double total, Map<String, Double> categories){
         this.name = name;
         this.total = total;
         this.categories = categories;
@@ -39,11 +47,11 @@ public class Budget {
         this.name = name;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Map<String, Double> categories) {
         this.categories = categories;
     }
 
-    public List<Category> getCategories() {
+    public Map<String, Double> getCategories() {
         return this.categories;
     }
 
@@ -58,9 +66,9 @@ public class Budget {
     @Override
     public String toString(){
         String toRet = this.name + " budget: Total amount = "+this.total + "\n";
-        for(Category cat: this.categories){
-            toRet += cat.toString() + "\n";
-        }
+//        for(Category cat: this.categories){
+//            toRet += cat.toString() + "\n";
+//        }
         return toRet;
     }
 

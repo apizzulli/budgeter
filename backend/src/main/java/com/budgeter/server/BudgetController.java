@@ -1,5 +1,6 @@
 package com.budgeter.server;
 import com.budgeter.server.Entities.Budget;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 //LOMBOK
@@ -13,11 +14,16 @@ public class BudgetController {
     }
 
     @CrossOrigin(origins="http://localhost:3000")
-    @PostMapping("/createBudget")
-    public String home(@RequestBody Budget newBudget) {
+    @PostMapping(value="/createBudget", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String createBudget(@RequestBody Budget newBudget) {
         budgetRepo.save(newBudget);
-        System.out.println("Budget created successfully.\n"+newBudget.toString());
-        return "Hello";
+        return "Created budget successfully: "+ newBudget.toString();
+    }
+
+    @CrossOrigin(origins="http://localhost:3000")
+    @GetMapping("/getBudget")
+    public Budget getBudget(@RequestBody Long id) {
+        return budgetRepo.getReferenceById(id);
     }
 
 }
