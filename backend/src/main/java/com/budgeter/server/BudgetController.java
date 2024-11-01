@@ -3,6 +3,8 @@ import com.budgeter.server.Entities.Budget;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 //LOMBOK
 @RestController
 public class BudgetController {
@@ -21,9 +23,11 @@ public class BudgetController {
     }
 
     @CrossOrigin(origins="http://localhost:3000")
-    @GetMapping("/getBudget")
-    public Budget getBudget(@RequestBody Long id) {
-        return budgetRepo.getReferenceById(id);
+    @GetMapping("/getBudget/{id}")
+    public Budget getBudget(@PathVariable("id") Long id) {
+        Optional<Budget> budg = budgetRepo.findById(id);
+        Budget budget = budg.get();
+        return budget;
     }
 
 }

@@ -29,7 +29,7 @@ export const CATEGORIES ={
 export default function Budget(){
 
     const [ anchorEl, setAnchorEl ] = useState(null);
-    const [ budgetCreated, setBudgetCreated ] = useState(false);
+    const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
     const [ categories, setCategories ] = useState([]);
     const [ menuItem, setMenuItem ] = useState("Select");
     let open = Boolean(anchorEl);
@@ -86,14 +86,25 @@ export default function Budget(){
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error(error));
-        setBudgetCreated(true);
+        //setcreateBudget(true);
     }
     //useEffect(()=>{},[categories]) // this will solve your issue 
+    const getBudget = () =>{
+        fetch(`http://localhost:8080/getBudget/${1}`)
+        .then(response => response.json())
+        .then(data => console.log(data));
+    }
+
+    function setCreateBudgetView(){
+        toggleCreateBudgetView(true);
+    }
+    function setViewBudgetView(){
+        toggleCreateBudgetView(false);
+    }
 
     return(
         <div style={{width: '100vw'}}>
-            <h1>Create Your Budget</h1>
-            <div style={{display: budgetCreated ? 'none': 'block'}} className="form-container">
+            <div  className="form-container">
                     <form onSubmit={createBudget}>
                         <div style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center'}}>
                             <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
@@ -124,10 +135,10 @@ export default function Budget(){
                             <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
                     </form>
             </div>
-            <div style={{display: budgetCreated ? 'block' : 'none'}}>
+            {/* <div style={{display: createBudget ? 'block' : 'none'}}>
                 <h2>Budget created successfully!</h2>
-                <Button variant="outlined" size="large" style={{color:'white'}} onClick={()=> setBudgetCreated(false)}>Create new budget</Button>
-            </div>
+                <Button variant="outlined" size="large" style={{color:'white'}} onClick={()=> setcreateBudget(false)}>Create new budget</Button>
+            </div> */}
         </div>
     );
 }
