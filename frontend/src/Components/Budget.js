@@ -65,10 +65,15 @@ export default function Budget(){
             let s = parseInt(categories[i].amount);
             sum+=s;
         }
-        if(sum != event.currentTarget.form.total.value){
+        // if(sum != event.currentTarget.form.total.value){
 
-        }
-        const newBudg = new BudgetObj(event.currentTarget.form.budgetName.value, event.currentTarget.form.total.value, categories);
+        // }
+        /*
+        var arr = [{key:"11", value:"1100"},{key:"22", value:"2200"}];
+        */var object = categories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
+
+        
+        const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
         fetch('http://localhost:8080/createBudget',
         {
             headers: {
