@@ -1,14 +1,11 @@
 package com.budgeter.server.Entities;
 
-import com.budgeter.server.Category;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -18,6 +15,7 @@ import java.util.Map;
 public class Budget implements Serializable {
 
     private @Id @GeneratedValue Long id;
+    private Integer user_id;
     private String name;
     private double total;
     @ElementCollection
@@ -37,6 +35,14 @@ public class Budget implements Serializable {
 
     public Long getId() {
         return this.id;
+    }
+
+    public Integer getuser_id(){
+        return this.user_id;
+    }
+
+    public void setuser_id(Integer id){
+        this.user_id = id;
     }
 
     public String getName() {

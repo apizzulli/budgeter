@@ -1,9 +1,7 @@
 package com.budgeter.server.Entities;
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="Users")
@@ -12,7 +10,9 @@ public class User {
     private @Id @GeneratedValue Long id;
     private String username;
     private String password;
-    List<Budget> budgets;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @OneToMany List<Budget> budgets;
 
     public User(){}
     public User(Long id, String username, String password, List<Budget> budgets) {
