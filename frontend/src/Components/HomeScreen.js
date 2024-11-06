@@ -1,7 +1,16 @@
 import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
+import {useEffect} from 'react';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'; 
+
 
 export default function HomeScreen() {
+    const navigate = useNavigate();
     const login = (event) => {
         event.preventDefault();
         let user = event.currentTarget.user.value;
@@ -22,6 +31,7 @@ export default function HomeScreen() {
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error(error));
+        navigate("/viewBudgets");
     }
     return(
         <div style={{marginTop:'10%', display: 'flex', flexDirection: 'column',justifyContent:'center', alignItems:'center'}}>

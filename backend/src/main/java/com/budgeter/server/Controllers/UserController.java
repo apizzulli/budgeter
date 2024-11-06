@@ -1,8 +1,11 @@
 package com.budgeter.server.Controllers;
+import com.budgeter.server.Entities.Budget;
 import com.budgeter.server.Entities.User;
 import com.budgeter.server.UserDTO;
 import com.budgeter.server.Repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -25,9 +28,20 @@ public class UserController {
 
     @CrossOrigin(origins="http://localhost:3000")
     @PostMapping("/login")
-    public Long login(@RequestBody UserDTO login){
+    public User login(@RequestBody UserDTO login){
         User user = userRepo.findByUsername(login.getUsername());
-        return user.getId();
+        return user;
+    }
+
+    @CrossOrigin(origins="http://localhost:3000")
+    @PostMapping(value="/createBudget/{id}")
+    public String createBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
+        Optional<User> userOp = userRepo.findById(userId);
+        User user = userOp.get();
+        User.addBudget(user,newBudget);
+        userRepo.save(user);
+        //budgetRepo.save(newBudget);
+        return "Created budget successfully: "+ newBudget.toString();
     }
 
 }

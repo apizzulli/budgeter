@@ -4,14 +4,13 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Users")
+@Table(name="users")
 public class User {
 
-    private @Id @GeneratedValue Long id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String username;
     private String password;
-
-    @OneToMany List<Budget> budgets;
+    @JoinColumn(name="user_id") @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) List<Budget> budgets;
 
     public User(){}
     public User(Long id, String username, String password) {
@@ -50,6 +49,12 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public static void addBudget(User user, Budget newBudget){
+        List<Budget> newBudgets = user.getBudgets();
+        newBudgets.add(newBudget);
+        user.setBudgets(newBudgets);
     }
 
 }

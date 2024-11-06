@@ -1,6 +1,7 @@
 import { ListItem } from "@mui/material";
-
+import { useEffect } from "react";
 export default function ViewBudgets(){
+    
     return (
         <div>
             <h1>Welcome to budgets view</h1>
