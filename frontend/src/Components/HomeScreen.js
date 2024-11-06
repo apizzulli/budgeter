@@ -15,6 +15,7 @@ export default function HomeScreen() {
         event.preventDefault();
         let user = event.currentTarget.user.value;
         let pass =  event.currentTarget.password.value;
+        let userId = null;
         const userDTO = {
             username: event.currentTarget.user.value,
             password: event.currentTarget.password.value
@@ -28,10 +29,16 @@ export default function HomeScreen() {
             method: "POST",
             body: JSON.stringify(userDTO)
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-        navigate("/viewBudgets");
+        .then(response => response.json()).then((data) => {
+            const userId = data;  // Assuming the response contains `userId`
+            if (userId) {
+                // Once you have the userId, navigate with state
+                navigate("/viewBudgets", { state: { userId } });
+            } else {
+                // Handle the case where no userId is returned
+                console.error("No userId in the response!");
+            }});
+        // navigate("/viewBudgets", {state: });
     }
     return(
         <div style={{marginTop:'10%', display: 'flex', flexDirection: 'column',justifyContent:'center', alignItems:'center'}}>
