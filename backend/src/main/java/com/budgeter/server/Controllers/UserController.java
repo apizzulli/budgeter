@@ -14,6 +14,16 @@ public class UserController {
     }
 
     @CrossOrigin(origins="http://localhost:3000")
+    @PostMapping("/createAccount")
+    public Long createAccount(@RequestBody UserDTO userDTO){
+        User newUser = new User();
+        newUser.setUsername(userDTO.getUsername());
+        newUser.setPassword(userDTO.getPassword());
+        userRepo.save(newUser);
+        return newUser.getId();
+    }
+
+    @CrossOrigin(origins="http://localhost:3000")
     @PostMapping("/login")
     public Long login(@RequestBody UserDTO login){
         User user = userRepo.findByUsername(login.getUsername());

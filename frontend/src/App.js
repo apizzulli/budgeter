@@ -7,6 +7,7 @@ import ViewBudgets from './Components/ViewBudgets.js';
 import NavBar from './Components/NavBar.js';
 import {Routes, Route} from 'react-router-dom';
 import { GlobalStoreContextProvider } from './GlobalStore.js';
+import CreateAccount from './Components/CreateAccount.js';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path = "/calendar-view" element = {<CalendarView/>}></Route>
             <Route path="/createBudget" element={<CreateNewBudget/>}></Route>
             <Route path="/viewBudgets" element={<ViewBudgets/>}></Route>
+            <Route path="/createAccount" element={<CreateAccount/>}></Route>
           </Routes>
         </div>
   );
