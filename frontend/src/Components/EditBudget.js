@@ -5,7 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import '../style/budget_style.css';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { useContext, useState, useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+
 
 function Category(name, amount){
     this.name = name;
@@ -26,13 +29,23 @@ export const CATEGORIES ={
     INTERNET: "Internet"
 }
 
-export default function Budget(){
+export default function EditBudget(){
 
     const [ anchorEl, setAnchorEl ] = useState(null);
+    const [ budget, setBudget ] = useState({});
+    const [ editName, setEditName ] = useState(false);
+    const [ editTotal, setEditTotal ] = useState(false);
+
     const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
     const [ categories, setCategories ] = useState([]);
     const [ menuItem, setMenuItem ] = useState("Select");
     let open = Boolean(anchorEl);
+    const location = useLocation();
+
+    useEffect(()=>{
+        setBudget(location.state.budget);
+        console.log("useEffect: categories = "+budget.categories);
+    });
 
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget.parentElement);
@@ -88,12 +101,17 @@ export default function Budget(){
         .catch(error => console.error(error));
         //setcreateBudget(true);
     }
-    //useEffect(()=>{},[categories]) // this will solve your issue 
-    const getBudget = () =>{
-        fetch(`http://localhost:8080/getBudget/${1}`)
-        .then(response => response.json())
-        .then(data => console.log(data));
-    }
+    
+    const nameDisplay = <div style={{fontSize:'25pt'}}>
+                            {location.state.budget.name}
+                            <ModeEditIcon style={{fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+                        </div>;
+    const totalDisplay = <div style={{fontSize:'18pt',marginTop:'3%'}}>
+                            Total: {location.state.budget.total}$
+                            <ModeEditIcon style={{fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+                        </div>;
+    const nameInput = <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>;
+    const totalInput = <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>;   
 
     function setCreateBudgetView(){
         toggleCreateBudgetView(true);
@@ -102,17 +120,18 @@ export default function Budget(){
         toggleCreateBudgetView(false);
     }
 
+    function click(){
+        console.log(budget);
+    }
     return(
         <div style={{width: '100vw'}}>
             <div  className="form-container">
-                    <form onSubmit={createBudget}>
-                        <div style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center'}}>
-                            <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
-                            <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>
-                        </div>
+                    <form >
+                        {editName ? nameInput : nameDisplay}
+                        {editTotal ? totalInput : totalDisplay}
                         <h3>Categories</h3>
-                        {categories.map((cat,i) => <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
-                        <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
+                        {Object.keys(location.state.budget.categories).map((name) => <div key={name} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + location.state.budget.categories[name]}</div>)}
+                        <Button onClick={click}type="submit" variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
                     </form>
                     <div style={{width: '100%', marginTop:'1%'}}>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
