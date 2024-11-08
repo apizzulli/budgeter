@@ -1,0 +1,70 @@
+import Menu, { MenuPaper } from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Input from '@mui/joy/Input';
+import Button from '@mui/joy/Button';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import { useState } from 'react';
+
+export default function CategoryForm({checkCats,savedCategories, saveCategories}) {
+    const [ anchorEl, setAnchorEl ] = useState(null);
+    const [ menuItem, setMenuItem ] = useState("Select");
+
+    function Category(name, amount){
+        this.name = name;
+        this.amount = amount;
+    }
+
+    const CATEGORIES ={
+        GROCERY: "Grocery",
+        DISCR: "Discretionary",
+        SAVINGS: "Savings",
+        PHONE: "Phone",
+        INTERNET: "Internet"
+    }
+
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget.parentElement);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    }
+
+    const menuClick = (chosenCategory) => {
+        setMenuItem(chosenCategory);
+        setAnchorEl(null);
+    }
+
+    const addCategory = (event)=> {
+        const amount = event.currentTarget.catAmount.value;
+        event.target.reset();
+        event.preventDefault();
+        let newCat = new Category(menuItem, amount);
+        let newCats = [...savedCategories];
+        newCats.push(newCat);
+        saveCategories(newCats);
+        setMenuItem("Select");
+        checkCats();
+    }
+
+    return(
+        <div style={{width: '100%', marginTop:'1%'}}>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
+                {Object.keys(CATEGORIES).map((name)=><MenuItem onClick={()=>menuClick(CATEGORIES[name])}>{CATEGORIES[name]}</MenuItem>)}
+            </Menu>
+            <div style={{display: 'flex', alignItems:'center', justifyContent:'center', width:'100%'}}>
+                <div style={{display: 'flex', alignItems:'center'}}>
+                    <h3>{"Category: "+menuItem}</h3>
+                    <ArrowDropDownIcon style={{display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
+                    <ArrowDropUpIcon style={{display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>
+                </div>
+            </div>
+            <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
+                <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
+                <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
+            </form>
+        </div>
+    );
+}
+                    

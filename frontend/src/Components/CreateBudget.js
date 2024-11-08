@@ -1,5 +1,6 @@
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
+import CategoryForm from './CategoryForm';
 import Menu, { MenuPaper } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import '../style/budget_style.css';
@@ -30,7 +31,7 @@ export default function CreateBudget(){
 
     const [ anchorEl, setAnchorEl ] = useState(null);
     const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
-    const [ categories, setCategories ] = useState([]);
+    const [ savedCategories, saveCategories ] = useState([]);
     const [ menuItem, setMenuItem ] = useState("Select");
     let open = Boolean(anchorEl);
 
@@ -47,32 +48,26 @@ export default function CreateBudget(){
         setAnchorEl(null);
     }
 
-    const addCategory = (event)=> {
-        const amount = event.currentTarget.catAmount.value;
-        event.preventDefault();
-        let newCat = new Category(menuItem, amount);
-        let newCats = categories;
-        newCats.push(newCat);
-        setCategories(newCats);
-        setMenuItem("Select");
-        event.target.reset();
-    }
+    // const addCategory = (event)=> {
+    //     const amount = event.currentTarget.catAmount.value;
+    //     event.preventDefault();
+    //     let newCat = new Category(menuItem, amount);
+    //     let newCats = categories;
+    //     newCats.push(newCat);
+    //     setCategories(newCats);
+    //     setMenuItem("Select");
+    //     event.target.reset();
+    // }
 
     const createBudget = (event) => {
         event.preventDefault();
         let sum = 0;
-        for(let i = 0; i < categories.length; i++){
-            let s = parseInt(categories[i].amount);
-            sum+=s;
-        }
-        // if(sum != event.currentTarget.form.total.value){
-
+        // for(let i = 0; i < categories.length; i++){
+        //     let s = parseInt(categories[i].amount);
+        //     sum+=s;
         // }
-        /*
-        var arr = [{key:"11", value:"1100"},{key:"22", value:"2200"}];
-        */var object = categories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
-
-        
+        // // if(sum != event.currentTarget.form.total.value){
+        let object = savedCategories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
         const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
         fetch('http://localhost:8080/createBudget',
         {
@@ -95,6 +90,9 @@ export default function CreateBudget(){
         .then(data => console.log(data));
     }
 
+    function checkCats() {
+        console.log(savedCategories);
+    }
     function setCreateBudgetView(){
         toggleCreateBudgetView(true);
     }
@@ -111,10 +109,11 @@ export default function CreateBudget(){
                             <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>
                         </div>
                         <h3>Categories</h3>
-                        {categories.map((cat,i) => <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
+                        {savedCategories.map((cat) => <div style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
                         <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
                     </form>
-                    <div style={{width: '100%', marginTop:'1%'}}>
+                    <CategoryForm checkCats={checkCats} savedCategories={savedCategories} saveCategories={saveCategories}></CategoryForm>
+                    {/* <div style={{width: '100%', marginTop:'1%'}}>
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
                             <MenuItem onClick={()=>menuClick(CATEGORIES.GROCERY)}>Grocery</MenuItem>
                             <MenuItem onClick={()=>menuClick(CATEGORIES.DISCR)}>Discretionary</MenuItem>
@@ -129,11 +128,12 @@ export default function CreateBudget(){
                                 <ArrowDropUpIcon style={{display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>
                             </div>
                         </div>
-                    </div>
+                    </div> 
                     <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
                             <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
                             <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
                     </form>
+                    */}
             </div>
             {/* <div style={{display: createBudget ? 'block' : 'none'}}>
                 <h2>Budget created successfully!</h2>

@@ -1,11 +1,8 @@
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import Menu, { MenuPaper } from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import '../style/budget_style.css';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useContext, useState, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
@@ -21,13 +18,7 @@ function BudgetObj(name,total,categories) {
     this.categories = categories;
 }
 
-export const CATEGORIES ={
-    GROCERY: "Grocery",
-    DISCR: "Discretionary",
-    SAVINGS: "Savings",
-    PHONE: "Phone",
-    INTERNET: "Internet"
-}
+
 
 export default function EditBudget(){
 
@@ -35,10 +26,10 @@ export default function EditBudget(){
     const [ budget, setBudget ] = useState({});
     const [ editName, setEditName ] = useState(false);
     const [ editTotal, setEditTotal ] = useState(false);
+    const [ editCategories, setEditCategories ] = useState(false);
 
     const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
     const [ categories, setCategories ] = useState([]);
-    const [ menuItem, setMenuItem ] = useState("Select");
     let open = Boolean(anchorEl);
     const location = useLocation();
 
@@ -47,29 +38,23 @@ export default function EditBudget(){
         console.log("useEffect: categories = "+budget.categories);
     });
 
-    const handleMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget.parentElement);
-    };
+    
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    }
+    // const menuClick = (chosenCategory) => {
+    //     setMenuItem(chosenCategory);
+    //     setAnchorEl(null);
+    // }
 
-    const menuClick = (chosenCategory) => {
-        setMenuItem(chosenCategory);
-        setAnchorEl(null);
-    }
-
-    const addCategory = (event)=> {
-        const amount = event.currentTarget.catAmount.value;
-        event.preventDefault();
-        let newCat = new Category(menuItem, amount);
-        let newCats = categories;
-        newCats.push(newCat);
-        setCategories(newCats);
-        setMenuItem("Select");
-        event.target.reset();
-    }
+    // const addCategory = (event)=> {
+    //     const amount = event.currentTarget.catAmount.value;
+    //     event.preventDefault();
+    //     let newCat = new Category(menuItem, amount);
+    //     let newCats = categories;
+    //     newCats.push(newCat);
+    //     setCategories(newCats);
+    //     setMenuItem("Select");
+    //     event.target.reset();
+    // }
 
     const createBudget = (event) => {
         event.preventDefault();
@@ -102,62 +87,67 @@ export default function EditBudget(){
         //setcreateBudget(true);
     }
     
-    const nameDisplay = <div style={{fontSize:'25pt'}}>
+    const updateName = (event) =>{
+        event.preventDefault();
+        location.state.budget.name = event.currentTarget.form.budgetName.value;
+        setEditName(false);
+    }
+
+    const updateTotal = (event) =>{
+        event.preventDefault();
+        location.state.budget.total = event.currentTarget.form.total.value;
+        setEditTotal(false);
+    }
+
+    const nameDisplay = <h2 style={{display:'inline'}}>
                             {location.state.budget.name}
-                            <ModeEditIcon style={{fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
-                        </div>;
-    const totalDisplay = <div style={{fontSize:'18pt',marginTop:'3%'}}>
-                            Total: {location.state.budget.total}$
-                            <ModeEditIcon style={{fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
-                        </div>;
-    const nameInput = <Input name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>;
-    const totalInput = <Input name="total" sx={{width: 200}} placeholder="Total" required></Input>;   
-
-    function setCreateBudgetView(){
-        toggleCreateBudgetView(true);
-    }
-    function setViewBudgetView(){
-        toggleCreateBudgetView(false);
-    }
-
-    function click(){
-        console.log(budget);
-    }
+                            <ModeEditIcon onClick={()=>setEditName(true)} style={{display:'inline',fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+                        </h2>
+    const totalDisplay = <div style={{marginTop:'5%'}}>
+                            <h2 style={{display:'inline'}}>Total:</h2>
+                            <div style={{marginLeft:'2%', display:'inline',fontSize:'15pt'}}>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(location.state.budget.total)}</div>
+                            <ModeEditIcon onClick={()=>setEditTotal(true)} style={{display:'inline',fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+                        </div>
+    const categoriesDisplay = 
+                            <div style={{marginTop:'5%'}}>
+                                <h2 style={{display:'inline'}}>Categories</h2>
+                                <ModeEditIcon onClick={()=>{setEditCategories(true)}} style={{marginLeft:'6pt',display:'inline',fontSize:'15pt'}}></ModeEditIcon>
+                                {Object.keys(location.state.budget.categories).map((name) => <div key={name} style={{marginTop:'5%',width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + location.state.budget.categories[name]}</div>)}
+                            </div>
+    const nameInput = <div>
+                        <Input defaultValue={location.state.budget.name} name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
+                        <Button onClick={updateName} variant="outlined" style={{color:'white'}}>Save Name</Button>
+                      </div>
+    const totalInput = <div>
+                            <Input defaultValue={location.state.budget.total} name="total" sx={{width: 200}} placeholder="Total" required></Input> 
+                            <Button onClick={updateTotal} variant="outlined" style={{color:'white'}}>Save Total</Button>
+                       </div>
+    const categoriesInput =<div>
+                           
+                                {Object.keys(location.state.budget.categories).map(
+                                    (name)=>(
+                                    <div style={{display:'flex'}}>
+                                        <Input defaultValue={name} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                                        <Input defaultValue={location.state.budget.categories[name]+"$"} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                                        <DeleteIcon></DeleteIcon>
+                                    </div>
+                                ))}
+                                <form style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
+                                        <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
+                                        <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
+                                </form>
+                        </div>
+    
     return(
         <div style={{width: '100vw'}}>
-            <div  className="form-container">
+            <div className="form-container">
                     <form >
-                        {editName ? nameInput : nameDisplay}
-                        {editTotal ? totalInput : totalDisplay}
-                        <h3>Categories</h3>
-                        {Object.keys(location.state.budget.categories).map((name) => <div key={name} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + location.state.budget.categories[name]}</div>)}
-                        <Button onClick={click}type="submit" variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
-                    </form>
-                    <div style={{width: '100%', marginTop:'1%'}}>
-                        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
-                            <MenuItem onClick={()=>menuClick(CATEGORIES.GROCERY)}>Grocery</MenuItem>
-                            <MenuItem onClick={()=>menuClick(CATEGORIES.DISCR)}>Discretionary</MenuItem>
-                            <MenuItem onClick={()=>menuClick(CATEGORIES.SAVINGS)}>Savings</MenuItem>
-                            <MenuItem onClick={()=>menuClick(CATEGORIES.PHONE)}>Phone</MenuItem>
-                            <MenuItem onClick={()=>menuClick(CATEGORIES.INTERNET)}>Internet</MenuItem>
-                        </Menu>
-                        <div style={{display: 'flex', alignItems:'center', justifyContent:'center', width:'100%'}}>
-                            <div style={{display: 'flex', alignItems:'center'}}>
-                                <h3>{"Category: "+menuItem}</h3>
-                                <ArrowDropDownIcon style={{display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
-                                <ArrowDropUpIcon style={{display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>
-                            </div>
-                        </div>
-                    </div>
-                    <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
-                            <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
-                            <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
+                        <div>{editName ? nameInput : nameDisplay}</div>
+                        <div>{editTotal ? totalInput : totalDisplay}</div>
+                       <div>{editCategories ? categoriesInput: categoriesDisplay}</div>
+                        <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
                     </form>
             </div>
-            {/* <div style={{display: createBudget ? 'block' : 'none'}}>
-                <h2>Budget created successfully!</h2>
-                <Button variant="outlined" size="large" style={{color:'white'}} onClick={()=> setcreateBudget(false)}>Create new budget</Button>
-            </div> */}
         </div>
     );
 }
