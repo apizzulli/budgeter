@@ -35,62 +35,22 @@ export default function EditBudget(){
 
     useEffect(()=>{
         setBudget(location.state.budget);
-        console.log("useEffect: categories = "+budget.categories);
     });
-
-    
-
-    // const menuClick = (chosenCategory) => {
-    //     setMenuItem(chosenCategory);
-    //     setAnchorEl(null);
-    // }
-
-    // const addCategory = (event)=> {
-    //     const amount = event.currentTarget.catAmount.value;
-    //     event.preventDefault();
-    //     let newCat = new Category(menuItem, amount);
-    //     let newCats = categories;
-    //     newCats.push(newCat);
-    //     setCategories(newCats);
-    //     setMenuItem("Select");
-    //     event.target.reset();
-    // }
-
-    const createBudget = (event) => {
-        event.preventDefault();
-        let sum = 0;
-        for(let i = 0; i < categories.length; i++){
-            let s = parseInt(categories[i].amount);
-            sum+=s;
-        }
-        // if(sum != event.currentTarget.form.total.value){
-
-        // }
-        /*
-        var arr = [{key:"11", value:"1100"},{key:"22", value:"2200"}];
-        */var object = categories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
-
-        
-        const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
-        fetch('http://localhost:8080/createBudget',
-        {
-            headers: {
-            "Accept":"application/json",
-            "Content-Type":"application/json",
-        },
-            method: "POST",
-            body: JSON.stringify(newBudg)
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-        //setcreateBudget(true);
-    }
     
     const updateName = (event) =>{
         event.preventDefault();
-        location.state.budget.name = event.currentTarget.form.budgetName.value;
+        const newName = event.currentTarget.form.budgetName.value;
+        fetch(`http://localhost:8080/budgets/update/name/${1}`,{method: "PATCH", body: newName})
+        .then(response=>{
+            if(response.ok){
+                location.state.budget.name = newName;
+                setBudget(location.state.budget);
+            }else{
+                console.log(response.status);
+            }
+        });
         setEditName(false);
+        //.catch(error => console.error(error));
     }
 
     const updateTotal = (event) =>{
@@ -98,6 +58,35 @@ export default function EditBudget(){
         location.state.budget.total = event.currentTarget.form.total.value;
         setEditTotal(false);
     }
+
+    // const editBudget(event) => {
+    //     event.preventDefault();
+    //     let sum = 0;
+    //     for(let i = 0; i < categories.length; i++){
+    //         let s = parseInt(categories[i].amount);
+    //         sum+=s;
+    //     }
+    //     // if(sum != event.currentTarget.form.total.value){
+
+    //     // }
+    //     /*
+    //     var arr = [{key:"11", value:"1100"},{key:"22", value:"2200"}];
+    //     */var object = categories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
+    //     const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
+    //     fetch('http://localhost:8080/budgets/updateBudget',
+    //     {
+    //         headers: {
+    //         "Accept":"application/json",
+    //         "Content-Type":"application/json",
+    //     },
+    //         method: "POST",
+    //         body: JSON.stringify(newBudg)
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => console.log(data))
+    //     .catch(error => console.error(error));
+    //     //setcreateBudget(true);
+    // }
 
     const nameDisplay = <h2 style={{display:'inline'}}>
                             {location.state.budget.name}
@@ -141,7 +130,7 @@ export default function EditBudget(){
     return(
         <div style={{width: '100vw'}}>
             <div className="form-container">
-                    <form >
+                    <form>
                         <div>{editName ? nameInput : nameDisplay}</div>
                         <div>{editTotal ? totalInput : totalDisplay}</div>
                        <div>{editCategories ? categoriesInput: categoriesDisplay}</div>

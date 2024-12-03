@@ -6,7 +6,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useState } from 'react';
 
-export default function CategoryForm({checkCats,savedCategories, saveCategories}) {
+export default function CategoryForm({savedCategories, saveCategories}) {
     const [ anchorEl, setAnchorEl ] = useState(null);
     const [ menuItem, setMenuItem ] = useState("Select");
 
@@ -45,9 +45,15 @@ export default function CategoryForm({checkCats,savedCategories, saveCategories}
         newCats.push(newCat);
         saveCategories(newCats);
         setMenuItem("Select");
-        checkCats();
     }
-
+    const editView = Object.keys(savedCategories).map(
+                        (name)=>(
+                        <div style={{display:'flex'}}>
+                            <Input defaultValue={name} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                            <Input defaultValue={savedCategories[name]+"$"} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                            <DeleteIcon></DeleteIcon>
+                        </div>
+                    ));
     return(
         <div style={{width: '100%', marginTop:'1%'}}>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   

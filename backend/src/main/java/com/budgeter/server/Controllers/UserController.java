@@ -34,24 +34,4 @@ public class UserController {
         return user.getId();
     }
 
-    @CrossOrigin(origins="http://localhost:3000")
-    @PostMapping(value="/createBudget/{id}")
-    public String createBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
-        Optional<User> userOp = userRepo.findById(userId);
-        User user = userOp.get();
-        User.addBudget(user,newBudget);
-        userRepo.save(user);
-        //budgetRepo.save(newBudget);
-        return "Created budget successfully: "+ newBudget.toString();
-    }
-
-    @CrossOrigin(origins="http://localhost:3000")
-    @GetMapping(value="/getBudgets/{userId}")
-    public List<Budget> getBudgets(@PathVariable(value="userId") Long userId) {
-        Optional<User> userOp = userRepo.findById(userId);
-        User user = userOp.get();
-        return user.getBudgets();
-    }
-
-
 }
