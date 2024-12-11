@@ -53,7 +53,7 @@ public class BudgetController {
         Budget budget = budg.get();
         budget.setName(newName);
         budgetRepo.save(budget);
-        return ResponseEntity.ok("Budget updated with new name " + newName + "\"");
+        return ResponseEntity.ok("Budget updated with new name \"" + newName + "\"");
     }
 
     @CrossOrigin(origins="http://localhost:3000")

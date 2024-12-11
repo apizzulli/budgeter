@@ -1,9 +1,9 @@
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import CategoryForm from './CategoryForm';
+import CategoryForm from '../CategoryForm';
 import Menu, { MenuPaper } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import '../style/budget_style.css';
+import '../../style/budget_style.css';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useContext, useState, useEffect } from 'react';

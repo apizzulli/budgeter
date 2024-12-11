@@ -29,9 +29,9 @@ public class UserController {
 
     @CrossOrigin(origins="http://localhost:3000")
     @PostMapping("/login")
-    public Long login(@RequestBody UserDTO login){
+    public List<Budget> login(@RequestBody UserDTO login){
         User user = userRepo.findByUsername(login.getUsername());
-        return user.getId();
+        return user.getBudgets();
     }
 
 }

@@ -1,6 +1,6 @@
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import '../style/budget_style.css';
+import '../../style/budget_style.css';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useContext, useState, useEffect } from 'react';
@@ -33,10 +33,6 @@ export default function EditBudget(){
     let open = Boolean(anchorEl);
     const location = useLocation();
 
-    useEffect(()=>{
-        setBudget(location.state.budget);
-    });
-    
     const updateName = (event) =>{
         event.preventDefault();
         const newName = event.currentTarget.form.budgetName.value;
@@ -55,10 +51,23 @@ export default function EditBudget(){
 
     const updateTotal = (event) =>{
         event.preventDefault();
-        location.state.budget.total = event.currentTarget.form.total.value;
-        setEditTotal(false);
+        const newTotal = event.currentTarget.form.total.value;
+        fetch(`http://localhost:8080/budgets/update/total/${1}`,{method: "PATCH", body: newTotal})
+        .then(response=>{
+            if(response.ok){
+                location.state.budget.total = newTotal;
+                setBudget(location.state.budget);
+            }else{
+                console.log(response.status);
+            }
+        });
+        setEditName(false);
     }
 
+    function updateBudget(newBudget) {
+        setBudget(newBudget);
+        
+    }
     // const editBudget(event) => {
     //     event.preventDefault();
     //     let sum = 0;

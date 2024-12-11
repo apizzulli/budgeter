@@ -8,23 +8,24 @@ export default function ViewBudgets(props){
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [ budgets, setBudgets ] = useState([]);
+    const [ budgets, setBudgets ] = useState(JSON.parse(localStorage.getItem("budgets")));
 
-    useEffect(()=>{
-        fetch(`http://localhost:8080/getBudgets/${location.state.userId}`)
-        .then(response => response.json())
-        .then(data => setBudgets(data))
-        .catch(error => console.error(error));
-    });
+    // useEffect(()=>{
+    //     setBudgets(location.state);
+    // },[]);
 
     function click(){
-        console.log(budgets);
+        console.log("click func location.state.budgets="+location.state);
     }
 
     function editClick(budget){
-        navigate("/editBudget", { state: { budget } });
+        navigate("/editBudget", { state: { budget }, updateBudget: {updateBudgets} });
     }
 
+    function updateBudgets(newBudgets) {
+        setBudgets(newBudgets);
+        localStorage.setItem("budgets",newBudgets);
+    }
 
     const budgetView = (budget) => {
         let categories = budget.categories;
@@ -45,12 +46,19 @@ export default function ViewBudgets(props){
 
     return (
         <div>
+            <button onClick={click}>Log</button>
             <h1>Welcome to budgets view</h1>
             <h2>Your existing budgets:</h2>
-            {budgets.map((budget,i) => 
-                <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>
-                    {budgetView(budget)}
-                </div>)}
+            {   
+                budgets != undefined ? 
+                budgets.map((budget,i) => 
+                    <div key={i} style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>
+                        {budgetView(budget)}
+                    </div>
+                )
+                :
+                <div>Sorry! No data</div>
+            }
         </div>
     )
 }
