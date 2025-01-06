@@ -1,0 +1,7 @@
+.verticalFlex{
+    width:100%;
+    display: flex;
+    flex-direction:column;
+    column-gap: 5;
+    justify-content:center;
+}
