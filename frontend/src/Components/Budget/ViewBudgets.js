@@ -23,15 +23,19 @@ export default function ViewBudgets(props){
         localStorage.setItem("budgets",newBudgets);
     }
 
+    const transactions = (budget) => {
+        localStorage.setItem("selectedBudget",JSON.stringify(budget));
+        navigate("/addTransactions");
+    }
     const budgetView = (budget) => {
         let categories = budget.categories;
         return(
-            <div style={{borderRadius:'4%', backgroundColor:'rgb(146, 159, 178, 0.250)',marginBottom:'4%',width:'65%'}}>
+            <div style={{backgroundColor:'rgb(146, 159, 178, 0.130)',marginBottom:'4%',width:'35%'}}>
                 <h2>{budget.name}<br></br>{"$"+ budget.total + " total"}</h2>
                 <div>
                     <h3>Categories:</h3>
                     {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
-                    <Button variant="outlined" style={{marginBottom:'5%',color:'white',marginTop:'3%'}}>Add Transactions</Button>
+                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'3%'}}>Add Transactions</Button>
                 </div>
             </div>
         );

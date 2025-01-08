@@ -19,3 +19,6 @@ export function login (userDTO) {
     //     }
     //});
 }
+export function addTransaction (transaction) {
+    console.log("adding transaction");
+}
