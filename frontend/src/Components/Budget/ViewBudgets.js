@@ -54,8 +54,15 @@ export default function ViewBudgets(props){
                 <div>
                     <h3>Categories:</h3>
                     {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
-                    <h3>Recent Transactions:</h3>
-                    {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
+                    {budget.transactions.length > 0 ? 
+                        (
+                            <div>
+                                <h3>Recent Transactions:</h3>
+                                {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
+                            </div>)
+                        :
+                        <h3>No Recent Transactions</h3>
+                    }
                     <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'3%'}}>Add Transactions</Button>
                 </div>
             </div>
@@ -64,11 +71,10 @@ export default function ViewBudgets(props){
 
     return (
         <div style={{height:'100%'}}>
-            <h1>Welcome to budgets view</h1>
+            <h1>Your Budgets:</h1>
             {   
                 budgets != undefined ? 
                 <div className="verticalFlex">
-                    <h2>Your existing budgets:</h2>
                     {budgets.map((budget,i) => 
                         <div key={i} className={"verticalFlex"}>
                             {budgetView(budget)}
