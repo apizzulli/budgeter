@@ -75,11 +75,12 @@ export default function ViewBudgets(props){
             {   
                 budgets != undefined ? 
                 <div className="verticalFlex">
-                    {budgets.map((budget,i) => 
-                        <div key={i} className={"verticalFlex"}>
-                            {budgetView(budget)}
-                        </div>
-                    )}
+                    {
+                        budgets.map((budget,i) => 
+                            <div key={i} className={"verticalFlex"}>
+                                {budgetView(budget)}
+                            </div>)
+                    }
                 </div>
                 :
                 <div>Sorry! No data</div>

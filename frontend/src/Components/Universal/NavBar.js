@@ -1,4 +1,4 @@
-import "../style/navbar_style.css";
+import "../../style/navbar_style.css";
 import Button from '@mui/joy/Button';
 import { Outlet, Link } from "react-router-dom";
 import { useState } from 'react';

@@ -1,4 +1,4 @@
-export function login (userDTO) {
+export async function login (userDTO) {
     let budgets = null;
     return fetch('http://localhost:8080/login',
     {
@@ -8,8 +8,7 @@ export function login (userDTO) {
     },
         method: "POST",
         body: JSON.stringify(userDTO)
-    })
-    .then(response => response.json());//.then((data) => {
+    });//.then((data) => {
     //     const budgetData = data; 
     //     if (budgetData) {
     //         budgets= budgetData;//budgets = budgetData;

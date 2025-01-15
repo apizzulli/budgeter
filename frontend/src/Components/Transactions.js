@@ -25,7 +25,8 @@ export default function Transactions() {
         event.preventDefault();
         setAnchorEl(event.currentTarget);
         let newTrans = new Transaction(selectedCat, event.currentTarget.amount.value, event.currentTarget.date.value, event.currentTarget.desc.value);
-        createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
+        let newBudg = createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
+        localStorage.setItem("selectedBudget",newBudg);
     }
 
     const handleMenuOpen =(event)=>{

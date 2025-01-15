@@ -4,6 +4,7 @@ import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 
 export default function CategoryForm({savedCategories, saveCategories}) {

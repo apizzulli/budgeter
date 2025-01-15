@@ -1,6 +1,6 @@
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import CategoryForm from '../CategoryForm';
+import CategoryForm from '../Universal/CategoryForm';
 import Menu, { MenuPaper } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import '../../style/budget_style.css';
@@ -27,7 +27,7 @@ export default function CreateBudget(){
         // }
         // // if(sum != event.currentTarget.form.total.value){
         let object = savedCategories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
-        const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
+        const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, event.currentTarget.total.value, object);
         fetch('http://localhost:8080/createBudget',
         {
             headers: {
