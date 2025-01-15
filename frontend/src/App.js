@@ -10,6 +10,7 @@ import {Routes, Route} from 'react-router-dom';
 import { GlobalStoreContextProvider } from './GlobalStore.js';
 import CreateAccount from './Components/CreateAccount.js';
 import EditBudget from './Components/Budget/EditBudget.js';
+import BudgetDetails from './Components/Budget/BudgetDetails.js';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/viewBudgets" element={<ViewBudgets/>}></Route>
             <Route path="/createAccount" element={<CreateAccount/>}></Route>
             <Route path="/addTransactions" element={<Transactions/>}></Route>
+            <Route path="/budgetDetails" element={<BudgetDetails/>}></Route>
           </Routes>
         </div>
   );

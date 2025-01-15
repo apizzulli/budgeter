@@ -5,7 +5,7 @@ import Menu, { MenuPaper } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-
+import { createTransaction } from '../Controllers/Requests';
 import { useState } from 'react';
 
 export default function Transactions() {
@@ -14,14 +14,18 @@ export default function Transactions() {
     const [ selectedCat, setSelectedCat ] = useState("Select");
     const inputs = ["Amount", "Description", "Date"];
 
-    const addTransaction = (form) => {
-        setAnchorEl(form.currentTarget);
-        // let amount = form.currentTarget.amount.value;
-        // let date = form.currentTarget.date.value;
-        // let desc = form.currentTarget.desc.value;
-        let cats = JSON.parse(localStorage.getItem("selectedBudget")).categories;
-        Object.keys(cats).forEach(cat=>console.log(cat));//.map((cat)=><MenuItem onClick={()=>selectCat(cat)}>{cat}</MenuItem>);
-        console.log("1");
+    function Transaction(category,amount,date, description) {
+        this.category = category;
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+    }
+
+    const addTransaction = (event) => {
+        event.preventDefault();
+        setAnchorEl(event.currentTarget);
+        let newTrans = new Transaction(selectedCat, event.currentTarget.amount.value, event.currentTarget.date.value, event.currentTarget.desc.value);
+        createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
     }
 
     const handleMenuOpen =(event)=>{
