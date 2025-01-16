@@ -6,8 +6,9 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import '../../style/default_styles.css'
 import BudgetDetails from "./BudgetDetails";
 import { BudgetContext } from '../../App.js';
+import Stack from '@mui/material/Stack';
+
 export default function ViewBudgets(props){
-    
     const navigate = useNavigate();
     const location = useLocation();
     const [ detailedView, setDetailedView ] = useState(null);
@@ -51,8 +52,9 @@ export default function ViewBudgets(props){
         let categories = budget.categories;
         console.log("Budget view:\nTransactions: "+transactions[0]);
         return(
-            <div style={{backgroundColor:'rgb(146, 159, 178, 0.130)',marginBottom:'4%',width:'35%'}}>
-                <h2>{budget.name}<br></br>{"$"+ budget.total + " total"}</h2>
+            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'35%'}}>
+                <Stack alignItems="center" direction="row" style={{marginLeft:'7px'}} ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
+                <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
                 <div>
                     <h3>Categories:</h3>
                     {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
@@ -65,7 +67,7 @@ export default function ViewBudgets(props){
                         :
                         <h3>No Recent Transactions</h3>
                     }
-                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'3%'}}>Add Transactions</Button>
+                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'10%'}}>Add Transactions</Button>
                 </div>
             </div>
         );
@@ -79,7 +81,7 @@ export default function ViewBudgets(props){
                 <div className="verticalFlex">
                     {
                         budgets.map((budget,i) => 
-                            <div key={i} className={"verticalFlex"}>
+                            <div key={i} className={"verticalFlex"} style={{borderRadius: '100px'}}>
                                 {budgetView(budget)}
                             </div>)
                     }
