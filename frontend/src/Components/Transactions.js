@@ -6,12 +6,16 @@ import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { createTransaction } from '../Controllers/Requests';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { BudgetContext } from '../App.js';
 
 export default function Transactions() {
 
     const [ anchorEl, setAnchorEl ] = useState(null);
     const [ selectedCat, setSelectedCat ] = useState("Select");
+    const { budgets, setBudgets } = useContext(BudgetContext);
+    const { userId, setUserId } = useContext(BudgetContext);
+
     const inputs = ["Amount", "Description", "Date"];
 
     function Transaction(category,amount,date, description) {

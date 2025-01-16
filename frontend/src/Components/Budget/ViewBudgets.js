@@ -1,11 +1,18 @@
 import { ListItem } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/joy/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import '../../style/default_styles.css'
 import BudgetDetails from "./BudgetDetails";
+import { BudgetContext } from '../../App.js';
 export default function ViewBudgets(props){
+    
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [ detailedView, setDetailedView ] = useState(null);
+    const { budgets, setBudgets } = useContext(BudgetContext);
+    const { userId, setUserId } = useContext(BudgetContext);
 
     const USDollar = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -17,11 +24,6 @@ export default function ViewBudgets(props){
         return newDate.toLocaleDateString("en-US");
     };
     
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [ budgets, setBudgets ] = useState(JSON.parse(localStorage.getItem("budgets")));
-    const [ detailedView, setDetailedView ] = useState(null);
-
     function click(){
         console.log("click func location.state.budgets="+location.state);
     }
