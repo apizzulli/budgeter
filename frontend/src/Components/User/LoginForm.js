@@ -42,14 +42,14 @@ export default function LoginForm() {
     } 
 
     return(
-        <div style={{marginTop:'10%', display: 'flex', flexDirection: 'column',justifyContent:'center', alignItems:'center'}}>
+        <div className='verticalFlex' >
             <h2>Enter credentials below to login.</h2>
-            <div style={{width:'15%'}}>
-                <form onSubmit={loginUser}>
-                    <Input name="user" placeholder="Username" required></Input>
-                    <Input name="password" type="password" style={{marginTop:'7%',marginBottom:'7%'}} placeholder="Password" required></Input>
-                    <div style={{visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
-                    <Button type = "submit" variant="outlined" style={{marginTop: '7%',color: 'white'}}>Login</Button>
+            <div style={{width:'100%'}}>
+                <form className='verticalFlex' onSubmit={loginUser}>
+                    <Input style={{width:'15%'}} name="user" placeholder="Username" required></Input>
+                    <Input style={{width:'15%'}} name="password" type="password" placeholder="Password" required></Input>
+                    <div style={{marginTop:'1%',width: '100%',visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
+                    <Button type = "submit" variant="outlined" style={{marginTop: '1%',color: 'white'}}>Login</Button>
                 </form>
             </div>
             <h3>Don't have an account? Create one <a href="/createAccount" style={{textDecoration: "underline"}}>here</a>.</h3>

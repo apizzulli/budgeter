@@ -48,12 +48,16 @@ export default function ViewBudgets(props){
         navigate("/budgetDetails", {state: budget});
     }
 
+    function goToEdit() {
+        navigate("/editBudget");
+    }
+
     const budgetView = (budget) => {
         let categories = budget.categories;
         console.log("Budget view:\nTransactions: "+transactions[0]);
         return(
-            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'35%'}}>
-                <Stack alignItems="center" direction="row" style={{marginLeft:'7px'}} ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
+            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px'}}>
+                <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}} onClick={goToEdit} ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
                 <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
                 <div>
                     <h3>Categories:</h3>
@@ -81,7 +85,7 @@ export default function ViewBudgets(props){
                 <div className="verticalFlex">
                     {
                         budgets.map((budget,i) => 
-                            <div key={i} className={"verticalFlex"} style={{borderRadius: '100px'}}>
+                            <div key={i} className={"verticalFlex"}>
                                 {budgetView(budget)}
                             </div>)
                     }

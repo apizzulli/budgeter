@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useContext, useState, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-
 function Category(name, amount){
     this.name = name;
     this.amount = amount;
@@ -17,8 +16,6 @@ function BudgetObj(name,total,categories) {
     this.total = total;
     this.categories = categories;
 }
-
-
 
 export default function EditBudget(){
 
