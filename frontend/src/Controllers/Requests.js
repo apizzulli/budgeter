@@ -75,12 +75,9 @@ export async function editBudget(editedBudg, budgId) {
     },
         method: "POST",
         body: JSON.stringify(editedBudg)
-    })
-    .then((response) => {
-        console.log("editBudget in controller returns "+response.status);
-        return response;
-    })
-    .catch((error)=>{
+    }).then((response)=> {
+        return response.json();
+    }).catch((error)=>{
         return "Server error - budget not saved";
     })
 }

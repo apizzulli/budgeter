@@ -54,6 +54,7 @@ export default function ViewBudgets(props){
     }
 
     const budgetView = (budget) => {
+        console.log("Budget view "+budget);
         let categories = budget.categories;
         console.log("Budget view:\nTransactions: "+transactions[0]);
         return(
@@ -82,10 +83,10 @@ export default function ViewBudgets(props){
         <div style={{height:'100%'}}>
             <h1>Your Budgets:</h1>
             {   
-                budgets != undefined ? 
+                localStorage.getItem("budgets") != undefined ? 
                 <div className="verticalFlex">
                     {
-                        budgets.map((budget,i) => 
+                        JSON.parse(localStorage.getItem("budgets")).map((budget,i) => 
                             <div key={i} className={"verticalFlex"}>
                                 {budgetView(budget)}
                             </div>)

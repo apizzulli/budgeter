@@ -31,6 +31,7 @@ export default function CreateBudget(){
         event.preventDefault();
         let object = savedCategories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
         const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value*1, object);
+        let userId = localStorage.getItem("userId");
         const response = await newBudget(userId, newBudg);
         console.log("response in comp = "+response);
         if(!response){

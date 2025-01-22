@@ -49,7 +49,8 @@ export default function EditBudget(){
         setCurrentTotal(document.getElementById("totalInput").value);
     }
 
-    async function saveBudget() {
+    async function saveBudget(event) {
+        event.preventDefault();
         console.log("editing...");
         let budgId = JSON.parse(localStorage.getItem("selectedBudget")).id;
         let budgTotal = JSON.parse(localStorage.getItem("selectedBudget")).total;
@@ -59,8 +60,16 @@ export default function EditBudget(){
         }
         const editedBudget = new BudgetObj(budgId, currentName, currentTotal, currentCategories);
         const response = await editBudget(editedBudget, budgId);
-        if(response.status == "202"){
-            localStorage.setItem("selectedBudget",JSON.stringify(response.budget));
+        let budgets = JSON.parse(localStorage.getItem("budgets"));
+        if(response){
+            for(let i = 0; i < budgets.length; i++){
+                console.log("In foreach");
+                if(budgets[i].id == budgId){
+                    budgets[i] = response;
+                    console.log("matches, changing");
+                }
+            }
+            localStorage.setItem("budgets",JSON.stringify(budgets));
             navigate(-1);
             console.log("response");
         }else{
@@ -131,12 +140,12 @@ export default function EditBudget(){
 
     
     return(
-        <div className='verticalFlex' style={{width: '100%'}}>
+        <form onSubmit={saveBudget} className='verticalFlex' style={{width: '100%'}}>
             {nameDisplay}
             {totalDisplay}
             {categoriesDisplay}
-            <Button onClick={saveBudget} variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
+            <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
             <h3 style={{visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder', fontSize:'xxl', marginTop:'4%'}}>Server error - budget not saved</h3>
-        </div>
+        </form>
     );
 }
