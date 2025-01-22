@@ -26,12 +26,15 @@ export async function login (userDTO) {
         method: "POST",
         body: JSON.stringify(userDTO)
     }).then((response) => {
+        console.log("response.status = "+response.status);
         if(response.status != "200"){
             return 0;
         }
         else{
             return response.json();
         }
+    }).catch((error)=>{
+        return 2;
     })
     //     const budgetData = data; 
     //     if (budgetData) {
@@ -62,6 +65,24 @@ export async function newBudget(userId, newBudg) {
         }
     })
 
+}
+export async function editBudget(editedBudg, budgId) {
+    return fetch(`http://localhost:8080/budgets/edit/${budgId}`,
+    {
+        headers: {
+        "Accept":"application/json",
+        "Content-Type":"application/json",
+    },
+        method: "POST",
+        body: JSON.stringify(editedBudg)
+    })
+    .then((response) => {
+        console.log("editBudget in controller returns "+response.status);
+        return response;
+    })
+    .catch((error)=>{
+        return "Server error - budget not saved";
+    })
 }
 export function createTransaction (budgetId, transaction) {
     console.log("adding transaction");

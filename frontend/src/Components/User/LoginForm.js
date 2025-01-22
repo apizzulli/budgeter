@@ -15,6 +15,7 @@ export default function LoginForm() {
 
     const navigate = useNavigate();
     const [ noUser, setNoUser ] = useState(false);
+    const [ serverError, setServerError ] = useState(false);
     const { budgets, setBudgets } = useContext(BudgetContext);
     const { userId, setUserId } = useContext(BudgetContext);
 
@@ -31,13 +32,18 @@ export default function LoginForm() {
         if(!response){
             setNoUser(true);
             return;
+        }else if(response == 2){
+            setServerError(true);
+            return;
         }
         setUserId(response.id);
+        localStorage.setItem("userId",response.id);
         if(response.budgets.length == 0){
             //localStorage.setItem("budgets", response.json());
             navigate("/createBudget");
         }else{
             setBudgets(response.budgets);
+            localStorage.setItem("budgets",JSON.stringify(response.budgets));
         }
     } 
 
@@ -48,7 +54,8 @@ export default function LoginForm() {
                 <form className='verticalFlex' onSubmit={loginUser}>
                     <Input style={{width:'15%'}} name="user" placeholder="Username" required></Input>
                     <Input style={{width:'15%'}} name="password" type="password" placeholder="Password" required></Input>
-                    <div style={{marginTop:'1%',width: '100%',visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
+                    <div style={{width: '100%',visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
+                    <div style={{width: '100%',visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>Server error</div>
                     <Button type = "submit" variant="outlined" style={{marginTop: '1%',color: 'white'}}>Login</Button>
                 </form>
             </div>

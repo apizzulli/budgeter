@@ -5,13 +5,15 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useContext, useState, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { editBudget } from '../../Controllers/Requests'; 
 
 function Category(name, amount){
     this.name = name;
     this.amount = amount;
 }
 
-function BudgetObj(name,total,categories) {
+function BudgetObj(id, name,total,categories) {
+    this.id = id;
     this.name = name;
     this.total = total;
     this.categories = categories;
@@ -19,111 +21,105 @@ function BudgetObj(name,total,categories) {
 
 export default function EditBudget(){
 
+    const navigate = useNavigate();
     const [ anchorEl, setAnchorEl ] = useState(null);
     const [ budget, setBudget ] = useState({});
+    const [ serverError, setServerError ] = useState(false);
+    const [ currentName, setCurrentName ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).name);
     const [ editName, setEditName ] = useState(false);
+
+    const [ currentTotal, setCurrentTotal ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).total);
     const [ editTotal, setEditTotal ] = useState(false);
+    
+    const [ currentCategories, setCurrentCategories ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).categories);
     const [ editCategories, setEditCategories ] = useState(false);
 
     const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
-    const [ categories, setCategories ] = useState([]);
+
     let open = Boolean(anchorEl);
     const location = useLocation();
 
-    const updateName = (event) =>{
-        event.preventDefault();
-        const newName = event.currentTarget.form.budgetName.value;
-        fetch(`http://localhost:8080/budgets/update/name/${1}`,{method: "PATCH", body: newName})
-        .then(response=>{
-            if(response.ok){
-                location.state.budget.name = newName;
-                setBudget(location.state.budget);
-            }else{
-                console.log(response.status);
-            }
-        });
+    function nameDone() {
         setEditName(false);
-        //.catch(error => console.error(error));
+        setCurrentName(document.getElementById("nameInput").value);
     }
 
-    const updateTotal = (event) =>{
-        event.preventDefault();
-        const newTotal = event.currentTarget.form.total.value;
-        fetch(`http://localhost:8080/budgets/update/total/${1}`,{method: "PATCH", body: newTotal})
-        .then(response=>{
-            if(response.ok){
-                location.state.budget.total = newTotal;
-                setBudget(location.state.budget);
-            }else{
-                console.log(response.status);
-            }
-        });
-        setEditName(false);
+    function totalDone() {
+        setEditTotal(false);
+        setCurrentTotal(document.getElementById("totalInput").value);
     }
 
-    function updateBudget(newBudget) {
-        setBudget(newBudget);
-        
+    async function saveBudget() {
+        console.log("editing...");
+        let budgId = JSON.parse(localStorage.getItem("selectedBudget")).id;
+        let budgTotal = JSON.parse(localStorage.getItem("selectedBudget")).total;
+        let newTotal = currentTotal;
+        if(budgTotal == currentTotal){
+            newTotal = -1;
+        }
+        const editedBudget = new BudgetObj(budgId, currentName, currentTotal, currentCategories);
+        const response = await editBudget(editedBudget, budgId);
+        if(response.status == "202"){
+            localStorage.setItem("selectedBudget",JSON.stringify(response.budget));
+            navigate(-1);
+            console.log("response");
+        }else{
+            setServerError(true);
+        }
     }
-    // const editBudget(event) => {
-    //     event.preventDefault();
-    //     let sum = 0;
-    //     for(let i = 0; i < categories.length; i++){
-    //         let s = parseInt(categories[i].amount);
-    //         sum+=s;
-    //     }
-    //     // if(sum != event.currentTarget.form.total.value){
 
-    //     // }
-    //     /*
-    //     var arr = [{key:"11", value:"1100"},{key:"22", value:"2200"}];
-    //     */var object = categories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
-    //     const newBudg = new BudgetObj(event.currentTarget.budgetName.value, event.currentTarget.total.value, object);
-    //     fetch('http://localhost:8080/budgets/updateBudget',
-    //     {
-    //         headers: {
-    //         "Accept":"application/json",
-    //         "Content-Type":"application/json",
-    //     },
-    //         method: "POST",
-    //         body: JSON.stringify(newBudg)
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => console.log(data))
-    //     .catch(error => console.error(error));
-    //     //setcreateBudget(true);
-    // }
-
-    const nameDisplay = <h2 style={{display:'inline'}}>
-                            {location.state.budget.name}
-                            <ModeEditIcon onClick={()=>setEditName(true)} style={{display:'inline',fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
-                        </h2>
-    const totalDisplay = <div style={{marginTop:'5%'}}>
-                            <h2 style={{display:'inline'}}>Total:</h2>
-                            <div style={{marginLeft:'2%', display:'inline',fontSize:'15pt'}}>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(location.state.budget.total)}</div>
-                            <ModeEditIcon onClick={()=>setEditTotal(true)} style={{display:'inline',fontSize:'15pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+    const nameDisplay = <div className='horizontalFlex' style={{width:'50%'}} >
+                            <div className='horizontalFlex' style={{width:'100%',justifyContent:'space-between'}}>
+                                <h2 >Name:</h2>
+                                {editName ? 
+                                    <div className='horizontalFlex'>
+                                        <Input id="nameInput" defaultValue={currentName} name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
+                                        <Button onClick={nameDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+                                    </div>
+                                    :
+                                    <div className='horizontalFlex'>
+                                        <div style={{fontSize:'15pt'}}>{currentName}</div>
+                                        <ModeEditIcon onClick={()=>setEditName(true)} style={{fontSize:'18pt', marginLeft:'6pt'}}></ModeEditIcon>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+    const totalDisplay = <div className='horizontalFlex' style={{width:'50%'}}>
+                            <div className='horizontalFlex' style={{width:'100%',justifyContent:'space-between'}}>
+                                <h2 >Total:</h2>
+                                {
+                                    editTotal ?
+                                    <div className='horizontalFlex'>
+                                        <Input id="totalInput" defaultValue={currentTotal} name="budgetName" sx={{width: 100}} placeholder="Budget Total" required></Input>
+                                        <Button onClick={totalDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+                                    </div>
+                                    :
+                                    <div className='horizontalFlex'>
+                                        <div style={{fontSize:'15pt'}}>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(currentTotal)}</div>
+                                        <ModeEditIcon onClick={()=>setEditTotal(true)} style={{display:'inline',fontSize:'18pt', marginLeft:'6pt',marginTop:'3pt'}}></ModeEditIcon>
+                                    </div>
+                                }
+                            </div>
                         </div>
     const categoriesDisplay = 
-                            <div style={{marginTop:'5%'}}>
+                            <div className='horizontalFlex' style={{width:'50%'}}>
                                 <h2 style={{display:'inline'}}>Categories</h2>
                                 <ModeEditIcon onClick={()=>{setEditCategories(true)}} style={{marginLeft:'6pt',display:'inline',fontSize:'15pt'}}></ModeEditIcon>
-                                {Object.keys(location.state.budget.categories).map((name) => <div key={name} style={{marginTop:'5%',width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + location.state.budget.categories[name]}</div>)}
+                                {Object.keys(currentCategories).map((name) => <div key={name} style={{marginTop:'5%',width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + currentCategories[name]}</div>)}
                             </div>
-    const nameInput = <div>
-                        <Input defaultValue={location.state.budget.name} name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
-                        <Button onClick={updateName} variant="outlined" style={{color:'white'}}>Save Name</Button>
+    const nameField = <div className='horizontalFlex'>
+                        
                       </div>
-    const totalInput = <div>
-                            <Input defaultValue={location.state.budget.total} name="total" sx={{width: 200}} placeholder="Total" required></Input> 
-                            <Button onClick={updateTotal} variant="outlined" style={{color:'white'}}>Save Total</Button>
+    const totalField = <div>
+                            <Input id="totalInput" defaultValue={currentTotal} name="total" sx={{width: 200}} placeholder="Total" required></Input> 
+                            <Button onClick={totalDone} variant="outlined" style={{color:'white'}}>Done</Button>
                        </div>
-    const categoriesInput =<div>
-                           
-                                {Object.keys(location.state.budget.categories).map(
+    const categoriesField =<div>
+                                {Object.keys(currentCategories).map(
                                     (name)=>(
                                     <div style={{display:'flex'}}>
                                         <Input defaultValue={name} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
-                                        <Input defaultValue={location.state.budget.categories[name]+"$"} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                                        <Input defaultValue={currentCategories[name]+"$"} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
                                         <DeleteIcon></DeleteIcon>
                                     </div>
                                 ))}
@@ -132,17 +128,15 @@ export default function EditBudget(){
                                         <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
                                 </form>
                         </div>
+
     
     return(
-        <div style={{width: '100vw'}}>
-            <div className="form-container">
-                    <form>
-                        <div>{editName ? nameInput : nameDisplay}</div>
-                        <div>{editTotal ? totalInput : totalDisplay}</div>
-                       <div>{editCategories ? categoriesInput: categoriesDisplay}</div>
-                        <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
-                    </form>
-            </div>
+        <div className='verticalFlex' style={{width: '100%'}}>
+            {nameDisplay}
+            {totalDisplay}
+            {categoriesDisplay}
+            <Button onClick={saveBudget} variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
+            <h3 style={{visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder', fontSize:'xxl', marginTop:'4%'}}>Server error - budget not saved</h3>
         </div>
     );
 }
