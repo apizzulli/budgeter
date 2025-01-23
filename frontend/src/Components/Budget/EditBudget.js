@@ -49,6 +49,11 @@ export default function EditBudget(){
         setCurrentTotal(document.getElementById("totalInput").value);
     }
 
+    function categoriesDone() {
+        setEditCategories(false);
+
+    }
+
     async function saveBudget(event) {
         event.preventDefault();
         console.log("editing...");
@@ -77,10 +82,10 @@ export default function EditBudget(){
         }
     }
 
-    const nameDisplay = <div className='horizontalFlex' style={{width:'50%'}} >
+    const nameDisplay = <div className='horizontalFlex' style={{width:'20%'}} >
                             <div className='horizontalFlex' style={{width:'100%',justifyContent:'space-between'}}>
                                 <h2 >Name:</h2>
-                                {editName ? 
+                                {editName && !editTotal && !editCategories ? 
                                     <div className='horizontalFlex'>
                                         <Input id="nameInput" defaultValue={currentName} name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
                                         <Button onClick={nameDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
@@ -93,11 +98,11 @@ export default function EditBudget(){
                                 }
                             </div>
                         </div>
-    const totalDisplay = <div className='horizontalFlex' style={{width:'50%'}}>
+    const totalDisplay = <div className='horizontalFlex' style={{width:'20%'}}>
                             <div className='horizontalFlex' style={{width:'100%',justifyContent:'space-between'}}>
                                 <h2 >Total:</h2>
                                 {
-                                    editTotal ?
+                                    editTotal && !editName && !editCategories ?
                                     <div className='horizontalFlex'>
                                         <Input id="totalInput" defaultValue={currentTotal} name="budgetName" sx={{width: 100}} placeholder="Budget Total" required></Input>
                                         <Button onClick={totalDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
@@ -110,33 +115,39 @@ export default function EditBudget(){
                                 }
                             </div>
                         </div>
+    const categoriesField =
+    <div>
+        {Object.keys(currentCategories).map(
+            (name)=>(
+            <div key={name} className='horizontalFlex'>
+                <Input defaultValue={name} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
+                <Input defaultValue={currentCategories[name]} type="text" name="catAmount" sx={{marginLeft: '6pt',width:100, height: 20}} required></Input>
+                <DeleteIcon style={{marginLeft:'6pt'}}></DeleteIcon>
+                <Button onClick={categoriesDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+            </div>
+        ))}
+        <form style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
+                <Button variant = "outlined" style={{color:'white', marginTop:'2%'}}type="submit">New Category</Button>
+        </form>
+    </div>
     const categoriesDisplay = 
-                            <div className='horizontalFlex' style={{width:'50%'}}>
-                                <h2 style={{display:'inline'}}>Categories</h2>
-                                <ModeEditIcon onClick={()=>{setEditCategories(true)}} style={{marginLeft:'6pt',display:'inline',fontSize:'15pt'}}></ModeEditIcon>
-                                {Object.keys(currentCategories).map((name) => <div key={name} style={{marginTop:'5%',width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{name + ": $" + currentCategories[name]}</div>)}
-                            </div>
-    const nameField = <div className='horizontalFlex'>
-                        
-                      </div>
-    const totalField = <div>
-                            <Input id="totalInput" defaultValue={currentTotal} name="total" sx={{width: 200}} placeholder="Total" required></Input> 
-                            <Button onClick={totalDone} variant="outlined" style={{color:'white'}}>Done</Button>
-                       </div>
-    const categoriesField =<div>
-                                {Object.keys(currentCategories).map(
-                                    (name)=>(
-                                    <div style={{display:'flex'}}>
-                                        <Input defaultValue={name} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
-                                        <Input defaultValue={currentCategories[name]+"$"} type="text" name="catAmount" sx={{width:200, height: 20}} required></Input>
-                                        <DeleteIcon></DeleteIcon>
-                                    </div>
-                                ))}
-                                <form style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
-                                        <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
-                                        <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
-                                </form>
+                        <div className='horizontalFlex' style={{width:'20%'}}>
+                            {
+                                editCategories ?
+                                <div>{categoriesField}</div>
+                                :
+                                <div className='verticalFlex' style={{width:'100%', justifyContent:'center'}}>
+                                    <h2 style={{display:'inline'}}>Categories:</h2>
+                                    {Object.keys(currentCategories).map((name) => 
+                                        <div className="horizontalFlex" key={name}>{name + ": $" + currentCategories[name]}
+                                            <ModeEditIcon onClick={()=>{setEditCategories(true)}} style={{marginLeft:'6pt',display:'inline',fontSize:'15pt'}}></ModeEditIcon>
+                                        </div>
+                                    )}
+                                </div>
+                            }
                         </div>
+    
+                            
 
     
     return(
