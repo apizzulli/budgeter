@@ -1,13 +1,13 @@
 import Input from '@mui/joy/Input';
-import "../style/default_styles.css";
+import "../../style/default_styles.css";
 import Button from '@mui/joy/Button';
 import Menu, { MenuPaper } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { createTransaction } from '../Controllers/Requests';
+import { createTransaction } from '../../Controllers/Requests';
 import { useState, useContext } from 'react';
-import { BudgetContext } from '../App.js';
+import { BudgetContext } from '../../App.js';
 
 export default function Transactions() {
 
@@ -25,11 +25,11 @@ export default function Transactions() {
         this.description = description;
     }
 
-    const addTransaction = (event) => {
+    async function addTransaction(event){
         event.preventDefault();
         setAnchorEl(event.currentTarget);
         let newTrans = new Transaction(selectedCat, event.currentTarget.amount.value, event.currentTarget.date.value, event.currentTarget.desc.value);
-        let newBudg = createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
+        let newBudg = await createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
         localStorage.setItem("selectedBudget",newBudg);
     }
 

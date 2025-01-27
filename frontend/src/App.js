@@ -2,7 +2,8 @@ import logo from './logo.svg';
 import './style/App.css';
 import NavBar from './Components/Global/NavBar.js';
 import CreateAccount from './Components/User/CreateAccount.js';
-import Transactions from './Components/Transactions.js';
+import Transactions from './Components/Transactions/ViewTransactions.js';
+import AddTransactions from './Components/Transactions/AddTransaction.js';
 import HomeScreen from './Components/HomeScreen.js';
 import CreateBudget from './Components/Budget/CreateBudget.js';
 import ViewBudgets from './Components/Budget/ViewBudgets.js';
@@ -28,8 +29,9 @@ function App() {
               <Route path="/editBudget" element={<EditBudget/>}></Route>
               <Route path="/viewBudgets" element={<ViewBudgets/>}></Route>
               <Route path="/createAccount" element={<CreateAccount/>}></Route>
-              <Route path="/addTransactions" element={<Transactions/>}></Route>
               <Route path="/budgetDetails" element={<BudgetDetails/>}></Route>
+              <Route path="/transactions" element={<Transactions/>}></Route>
+              <Route path="/addTransaction" element={<AddTransactions/>}></Route>
             </Routes>
           </div>
         </BudgetContext.Provider>

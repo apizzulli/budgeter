@@ -39,8 +39,19 @@ export default function ViewBudgets(props){
     }
 
     function transactions(budget) {
+        let vals = [];
+        Object.keys(budget.categories).map((cat)=>{
+            let spent = 0;
+            budget.transactions.forEach((t)=>{
+                if(t.category == cat){
+                    spent += t.amount;
+                }
+            })
+            vals.push({[cat]: spent/budget.categories[cat]});
+        })
         localStorage.setItem("selectedBudget",JSON.stringify(budget));
-        navigate("/addTransactions");
+        localStorage.setItem("remainingVals",JSON.stringify(vals));
+        navigate("/transactions");
     }
 
     function navToDetails(budget) {
@@ -61,20 +72,25 @@ export default function ViewBudgets(props){
             <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px'}}>
                 <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}}  ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon onClick={()=>{goToEdit(budget)}} style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
                 <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
-                <div>
-                    <h3>Categories:</h3>
-                    {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
-                    {budget.transactions.length > 0 ? 
-                        (
-                            <div>
-                                <h3>Recent Transactions:</h3>
-                                {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
-                            </div>)
-                        :
-                        <h3>No Recent Transactions</h3>
-                    }
-                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'10%'}}>Add Transactions</Button>
-                </div>
+                {   
+                    Object.keys(budget.categories).length > 0 ? 
+                    <div> 
+                        <h3>Categories:</h3>
+                        {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
+                        {budget.transactions.length > 0 ? 
+                            (
+                                <div>
+                                    <h3>Recent Transactions:</h3>
+                                    {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
+                                </div>)
+                            :
+                            <h3>No Recent Transactions</h3>
+                        }
+                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'10%'}}>Go to Transactions</Button>
+                    </div>
+                    :
+                    <div></div>
+                }
             </div>
         );
     }

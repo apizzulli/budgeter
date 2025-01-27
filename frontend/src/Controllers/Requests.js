@@ -81,7 +81,7 @@ export async function editBudget(editedBudg, budgId) {
         return "Server error - budget not saved";
     })
 }
-export function createTransaction (budgetId, transaction) {
+export async function createTransaction (budgetId, transaction) {
     console.log("adding transaction");
     return fetch(`http://localhost:8080/budgets/transactions/add/${budgetId}`,
     {
@@ -92,7 +92,7 @@ export function createTransaction (budgetId, transaction) {
         method: "POST",
         body: JSON.stringify(transaction)
     })
-    .then(response => response.json());
+    .then((response) => {return response.json()});
 }
 export function getBudget(id){
     return fetch(`http://localhost:8080/getBudget/${id}`)
