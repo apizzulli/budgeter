@@ -24,7 +24,16 @@ export default function CategoryForm({savedCategories, saveCategories}) {
         INTERNET: "Internet"
     }
 
+    window.addEventListener('mouseup', function(e) {
+        var x = document.querySelector('#categoryForm');
+        console.log("s");
+        if (e.target != document.querySelector(".menuItem") && Boolean(anchorEl)) {
+            setAnchorEl(null);
+        }
+    });
+
     const handleMenuOpen = (event) => {
+        console.log("s");
         setAnchorEl(event.currentTarget.parentElement);
     };
 
@@ -57,8 +66,8 @@ export default function CategoryForm({savedCategories, saveCategories}) {
                     ));
     return(
         <div style={{width: '100%', marginTop:'1%'}}>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
-                {Object.keys(CATEGORIES).map((name)=><MenuItem onClick={()=>menuClick(CATEGORIES[name])}>{CATEGORIES[name]}</MenuItem>)}
+            <Menu id="categoryMenu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
+                {Object.keys(CATEGORIES).map((name,i)=><MenuItem id="menuItem" onClick={()=>menuClick(CATEGORIES[name])}>{CATEGORIES[name]}</MenuItem>)}
             </Menu>
             <div style={{display: 'flex', alignItems:'center', justifyContent:'center', width:'100%'}}>
                 <div style={{display: 'flex', alignItems:'center'}}>

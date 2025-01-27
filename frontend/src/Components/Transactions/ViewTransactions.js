@@ -22,7 +22,7 @@ export default function ViewTransactions() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions);
+    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions.sort((a, b) => b.date - a.date));
     const [ remainingVals, setRemainingVals ] = useState(JSON.parse(localStorage.getItem("remainingVals")));
     const budgetName = useState(JSON.parse(localStorage.getItem("selectedBudget")).name);
 
@@ -30,16 +30,19 @@ export default function ViewTransactions() {
         let ret = null;
         switch(category){
             case "Groceries":
-                ret = <ShoppingCartIcon></ShoppingCartIcon>;
+                ret = <ShoppingCartIcon style={{fontSize:'45pt', color:'white'}}></ShoppingCartIcon>;
+                break;
+            case "Grocery":
+                ret = <ShoppingCartIcon style={{fontSize:'45pt', color:'white'}}></ShoppingCartIcon>;
                 break;
             case "Internet":
-                ret = <WifiIcon></WifiIcon>;
+                ret = <WifiIcon style={{fontSize:'45pt', color:'white'}}></WifiIcon>;
                 break;
             case "Savings":
-                ret = <SavingsIcon></SavingsIcon>;
+                ret = <SavingsIcon style={{fontSize:'45pt', color:'white'}}></SavingsIcon>;
                 break;
             case "Phone":
-                ret = <LocalPhoneIcon></LocalPhoneIcon>;
+                ret = <LocalPhoneIcon style={{fontSize:'45pt', color:'white'}}></LocalPhoneIcon>;
                 break;
         }
         return ret;
@@ -48,17 +51,17 @@ export default function ViewTransactions() {
         let name = Object.keys(val)[0];
         let percentage = Object.values(val)[0];
         let icon = pickIcon(name);
-        let textColor = "green";
+        let textColor = "rgb(56, 194, 25)";
         if(percentage*100 >= 70){
-            textColor = "red";
+            textColor = "rgb(255,44,44)";
         }else if(percentage >=50){
             textColor = "orange";
         }else if(percentage >= 30){
             textColor = "yellow";
         }  
-        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' style={{fontSize:'large',backgroundColor:'#ffffff9e',color:`${textColor}`,width:'15%', height:'100%'}}>
+        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' style={{backgroundColor:'rgba(255, 255, 255, 0.2)',width:'15%', height:'100%'}}>
                     <div>{icon}</div>
-                    <div>{percent.format(percentage)} spent</div>
+                    <div style={{color:`${textColor}`, fontWeight:'bolder'}}>{percent.format(percentage)} spent</div>
                 </Card>;
     }
 
@@ -78,8 +81,14 @@ export default function ViewTransactions() {
                 }
             </div>
             <h2>Transactions:</h2>  
-            <div style={{height:'75%',width:'100%'}}>
-                {transactions.map((trans) => <div >{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
+            <div style={{height:'75%',width:'40%'}}>
+                {transactions.map((trans) => 
+                    <div className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
+                        {dateStr(trans.date)}
+                        {pickIcon(trans.category)}
+                        <div className="verticalFlex" style={{fontSize:'15pt'}}>{trans.category + ", " + USDollar.format(trans.amount)}</div>
+                    </div>
+                )}
                 <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{color:'white', marginTop:'1%'}}>Add New Transaction</Button>
             </div>
         </div>
