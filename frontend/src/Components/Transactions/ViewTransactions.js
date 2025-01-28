@@ -84,9 +84,9 @@ export default function ViewTransactions() {
             <div style={{height:'75%',width:'40%'}}>
                 {transactions.map((trans) => 
                     <div className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
-                        {dateStr(trans.date)}
-                        {pickIcon(trans.category)}
-                        <div className="verticalFlex" style={{fontSize:'15pt'}}>{trans.category + ", " + USDollar.format(trans.amount)}</div>
+                        <div style={{paddingRight:'2%'}}>{dateStr(trans.date)}</div>
+                        <div>{pickIcon(trans.category)}</div>
+                        <div style={{fontSize:'15pt',width:'25%'}}>{" -" + USDollar.format(trans.amount)}</div>
                     </div>
                 )}
                 <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{color:'white', marginTop:'1%'}}>Add New Transaction</Button>
