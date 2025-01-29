@@ -20,11 +20,11 @@ export default function BudgetDetails({budget}) {
             <h3>Categories:</h3>
             <br></br>
             <div>
-                <Button onClick={cats}>recent</Button>
+                <Button style={{fontFamily:'inherit',color:'inherit'}} onClick={cats}>recent</Button>
                 Recent Transactions: 
                 {Object.keys(budget.transactions).map((transaction) => <div key={transaction.name} style={{width:'100%'}}>{transaction.name + ": $" }</div>)}
             </div>
-            <Button onClick={()=>{navigate("/addTransaction")}}>Add a Transaction</Button>
+            <Button style={{fontFamily:'inherit',color:'inherit'}} onClick={()=>{navigate("/addTransaction")}}>Add a Transaction</Button>
         </div>
     );
 }

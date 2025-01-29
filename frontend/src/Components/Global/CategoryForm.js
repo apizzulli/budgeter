@@ -76,7 +76,7 @@ export default function CategoryForm({savedCategories, saveCategories}) {
             </div>
             <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
                 <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
-                <Button variant = "outlined" style={{color:'white'}}type="submit">Add Category</Button>
+                <Button variant = "outlined" style={{fontFamily:'inherit',color:'inherit'}} type="submit">Add Category</Button>
             </form>
         </div>
     );

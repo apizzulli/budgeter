@@ -62,7 +62,7 @@ export default function CreateBudget(){
                         </div>
                         <h3>Categories</h3>
                         {savedCategories.map((cat) => <div style={{width:'100%', display:'flex', flexDirection:'column',columnGap:'5%', justifyContent:'center'}}>{cat.name + ": $" + cat.amount}</div>)}
-                        <Button type="submit" variant = "outlined" style={{color:'white', marginTop:"2%"}}>Create Budget</Button>
+                        <Button type="submit" variant = "outlined" style={{fontFamily:'inherit',color:'inherit',marginTop:"2%"}} >Create Budget</Button>
                     </form>
                     <CategoryForm savedCategories={savedCategories} saveCategories={saveCategories}></CategoryForm>
             </div>

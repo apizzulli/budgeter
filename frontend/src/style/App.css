@@ -12,3 +12,7 @@
   background-color: rgb(219, 219, 219);
   color: rgb(57, 97, 126);
 }
+@font-face {
+  font-family: 'Avenir Next Condensed' Helvetica, sans-serif normal;
+  src: url('./fonts/AvenirNextCondensed.ttc');
+}

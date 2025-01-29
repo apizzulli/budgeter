@@ -69,7 +69,7 @@ export default function ViewBudgets(props){
         let categories = budget.categories;
         console.log("Budget view:\nTransactions: "+transactions[0]);
         return(
-            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px'}}>
+            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px',height:'100%'}}>
                 <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}}  ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon onClick={()=>{goToEdit(budget)}} style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
                 <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
                 {   
@@ -86,7 +86,7 @@ export default function ViewBudgets(props){
                             :
                             <h3>No Recent Transactions</h3>
                         }
-                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',marginTop:'10%'}}>Go to Transactions</Button>
+                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{color:'inherit',fontFamily:'inherit',marginBottom:'5%',marginTop:'10%'}}>Go to Transactions</Button>
                     </div>
                     :
                     <div></div>
@@ -96,7 +96,7 @@ export default function ViewBudgets(props){
     }
 
     return (
-        <div style={{height:'100%'}}>
+        <div style={{height:'100vh'}}>
             <h1>Your Budgets:</h1>
             {   
                 localStorage.getItem("budgets") != undefined ? 

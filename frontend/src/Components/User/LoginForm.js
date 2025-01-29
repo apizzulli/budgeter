@@ -56,7 +56,7 @@ export default function LoginForm() {
                     <Input style={{width:'15%'}} name="password" type="password" placeholder="Password" required></Input>
                     <div style={{width: '100%',visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
                     <div style={{width: '100%',visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>Server error</div>
-                    <Button type = "submit" variant="outlined" style={{marginTop: '1%',color: 'white'}}>Login</Button>
+                    <Button type = "submit" variant="outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Login</Button>
                 </form>
             </div>
             <h3>Don't have an account? Create one <a href="/createAccount" style={{textDecoration: "underline"}}>here</a>.</h3>

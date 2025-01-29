@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import '../../style/default_styles.css';
 import Button from '@mui/joy/Button';
 import Card from '@mui/material/Card';
@@ -8,6 +8,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import SavingsIcon from '@mui/icons-material/Savings';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Shop } from '@mui/icons-material';
+import { BudgetContext } from '../../App.js';
 
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -20,6 +21,7 @@ const percent = new Intl.NumberFormat('default', {
 
 export default function ViewTransactions() {
 
+    const { lightMode } = useContext(BudgetContext);
     const navigate = useNavigate();
     const location = useLocation();
     const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions.sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -59,8 +61,8 @@ export default function ViewTransactions() {
         }else if(percentage >= 30){
             textColor = "yellow";
         }  
-        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' style={{backgroundColor:'rgba(255, 255, 255, 0.2)',width:'15%', height:'100%'}}>
-                    <div>{icon}</div>
+        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' id={lightMode ? '.card-light' : 'card-dark'} style={{width:'20%', height:'100%'}}>
+                    <div style={{color:'inherit'}}>{icon}</div>
                     <div style={{color:`${textColor}`, fontWeight:'bolder'}}>{percent.format(percentage)} spent</div>
                 </Card>;
     }
@@ -83,13 +85,13 @@ export default function ViewTransactions() {
             <h2>Transactions:</h2>  
             <div style={{height:'75%',width:'40%'}}>
                 {transactions.map((trans) => 
-                    <div className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
+                    <div id={lightMode ? '.card-light' : 'card-dark'} className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
                         <div style={{paddingRight:'2%'}}>{dateStr(trans.date)}</div>
                         <div>{pickIcon(trans.category)}</div>
                         <div style={{fontSize:'15pt',width:'25%'}}>{" -" + USDollar.format(trans.amount)}</div>
                     </div>
                 )}
-                <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{color:'white', marginTop:'1%'}}>Add New Transaction</Button>
+                <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Add New Transaction</Button>
             </div>
         </div>
     );

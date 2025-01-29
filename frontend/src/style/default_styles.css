@@ -12,3 +12,17 @@
     align-items: center;
     justify-content: center;
 }
+.button-dark{
+    color:'white'
+}
+.button-light {
+    color:'black'
+}
+#card-light{
+    background-color:rgb(179, 64, 64);
+    box-shadow: 10px 10px 5px rgb(0, 0, 0);
+
+}
+#card-dark{
+    background-color:rgba(255, 255, 255, 0.2);
+}

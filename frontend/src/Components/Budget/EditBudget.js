@@ -103,7 +103,7 @@ export default function EditBudget(){
                 {editName && !editTotal ? 
                     <div className='horizontalFlex'>
                         <Input id="nameInput" defaultValue={currentName} name="budgetName" sx={{width: 200}} placeholder="Budget Name" required></Input>
-                        <Button onClick={nameDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+                        <Button onClick={nameDone} variant="outlined" style={{fontFamily:'inherit',color:'inherit',marginLeft:'6pt'}}>Done</Button>
                     </div>
                     :
                     <div className='horizontalFlex'>
@@ -121,7 +121,7 @@ export default function EditBudget(){
                     editTotal && !editName  ?
                     <div className='horizontalFlex'>
                         <Input id="totalInput" defaultValue={currentTotal} name="budgetName" sx={{width: 100}} placeholder="Budget Total" required></Input>
-                        <Button onClick={totalDone} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+                        <Button onClick={totalDone} variant="outlined" style={{fontFamily:'inherit',color:'inherit',marginLeft:'6pt'}}>Done</Button>
                     </div>
                     :
                     <div className='horizontalFlex'>
@@ -138,7 +138,7 @@ export default function EditBudget(){
                     <Input id={"name"+i} defaultValue={name} type="text" name="catAmount" sx={{width:100, height: 20}} required></Input>
                     <Input id={"amount"+i} defaultValue={currentCategories[name]} type="text" name="catAmount" sx={{marginLeft: '6pt',width:100, height: 20}} required></Input>
                     <DeleteIcon style={{marginLeft:'6pt'}}></DeleteIcon>
-                    <Button onClick={()=>{categoriesDone(name,i)}} variant="outlined" style={{color:'white',marginLeft:'6pt'}}>Done</Button>
+                    <Button onClick={()=>{categoriesDone(name,i)}} variant="outlined" style={{fontFamily:'inherit',color:'inherit',marginLeft:'6pt'}}>Done</Button>
                 </div>
             </div>);
     }
@@ -155,7 +155,7 @@ export default function EditBudget(){
                             <ModeEditIcon onClick={()=>{editCat(name)}} style={{marginLeft:'6pt',display:'inline',fontSize:'15pt'}}></ModeEditIcon>
                         </div>
                 )}
-                <Button variant = "outlined" style={{color:'white', marginTop:'2%'}}>New Category</Button>
+                <Button variant = "outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:'2%'}}>New Category</Button>
             </div>
         </div>
     
@@ -164,7 +164,7 @@ export default function EditBudget(){
             {nameDisplay}
             {totalDisplay}
             {categoriesDisplay}
-            <Button onClick={saveBudget} variant = "outlined" style={{color:'white', marginTop:"6%"}}>Save Budget</Button>
+            <Button onClick={saveBudget} variant = "outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:"6%"}}>Save Budget</Button>
             <h3 style={{visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder', fontSize:'xxl', marginTop:'4%'}}>Server error - budget not saved</h3>
         </div>
     );
