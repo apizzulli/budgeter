@@ -26,14 +26,12 @@ export default function CategoryForm({savedCategories, saveCategories}) {
 
     window.addEventListener('mouseup', function(e) {
         var x = document.querySelector('#categoryForm');
-        console.log("s");
         if (e.target != document.querySelector(".menuItem") && Boolean(anchorEl)) {
             setAnchorEl(null);
         }
     });
 
     const handleMenuOpen = (event) => {
-        console.log("s");
         setAnchorEl(event.currentTarget.parentElement);
     };
 

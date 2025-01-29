@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './style/App.css';
 import NavBar from './Components/Global/NavBar.js';
+import CalendarView from './Components/Calendar/CalendarView.js';
 import CreateAccount from './Components/User/CreateAccount.js';
 import Transactions from './Components/Transactions/ViewTransactions.js';
 import AddTransactions from './Components/Transactions/AddTransaction.js';
@@ -25,6 +26,7 @@ function App() {
             <NavBar></NavBar>
             <Routes>
               <Route path = "/" element = {<HomeScreen/>}></Route>
+              <Route path="/calendar-view" element={<CalendarView/>}></Route>
               <Route path="/createBudget" element={<CreateBudget/>}></Route>
               <Route path="/editBudget" element={<EditBudget/>}></Route>
               <Route path="/viewBudgets" element={<ViewBudgets/>}></Route>

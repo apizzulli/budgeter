@@ -1,4 +1,4 @@
-import '../style/birthday_modal_style.css';
+import '../../style/birthday_modal_style.css';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import CancelIcon from '@mui/icons-material/Cancel';

@@ -22,7 +22,7 @@ export default function ViewTransactions() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions.sort((a, b) => b.date - a.date));
+    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions.sort((a, b) => new Date(b.date) - new Date(a.date)));
     const [ remainingVals, setRemainingVals ] = useState(JSON.parse(localStorage.getItem("remainingVals")));
     const budgetName = useState(JSON.parse(localStorage.getItem("selectedBudget")).name);
 

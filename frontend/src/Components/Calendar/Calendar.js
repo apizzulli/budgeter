@@ -1,5 +1,5 @@
 import CalendarTile from "./CalendarTile";
-import '../style/calendar_style.css';
+import '../../style/calendar_style.css';
 import { useState, useContext } from 'react';
 import Modal from '@mui/joy/Modal';
 import BirthdayModal from "./BirthdayModal";

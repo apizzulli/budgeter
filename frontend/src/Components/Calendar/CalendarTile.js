@@ -1,5 +1,5 @@
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
-import '../style/calendar_style.css';
+import '../../style/calendar_style.css';
 import { useState, useEffect } from 'react';
 import CakeIcon from '@mui/icons-material/Cake';
 import Modal from '@mui/joy/Modal';
