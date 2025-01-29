@@ -86,7 +86,7 @@ export default function ViewBudgets(props){
                             :
                             <h3>No Recent Transactions</h3>
                         }
-                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',color:'white',marginTop:'10%'}}>Go to Transactions</Button>
+                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{marginBottom:'5%',marginTop:'10%'}}>Go to Transactions</Button>
                     </div>
                     :
                     <div></div>

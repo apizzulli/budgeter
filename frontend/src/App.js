@@ -19,11 +19,12 @@ function App() {
 
   const [ budgets, setBudgets ] = useState([]);
   const [ userId, setUserId ] = useState(null);
+  const [ lightMode, setLightMode ] = useState(false);
 
   return (
-        <BudgetContext.Provider value={{budgets, setBudgets, userId, setUserId}}>
-          <div className="App">
-            <NavBar></NavBar>
+        <BudgetContext.Provider value={{lightMode, setLightMode, budgets, setBudgets, userId, setUserId}}>
+          <div className= {lightMode ? "App-light" : "App-dark"} >
+            <NavBar></NavBar> 
             <Routes>
               <Route path = "/" element = {<HomeScreen/>}></Route>
               <Route path="/calendar-view" element={<CalendarView/>}></Route>
