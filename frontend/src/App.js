@@ -23,7 +23,7 @@ function App() {
 
   return (
         <BudgetContext.Provider value={{lightMode, setLightMode, budgets, setBudgets, userId, setUserId}}>
-          <div className= {lightMode ? "App-light" : "App-dark"} >
+          <div className= {lightMode ? "App-light" : "App-dark"} style={{ height:'100vh'}} >
             <NavBar></NavBar> 
             <Routes>
               <Route path = "/" element = {<HomeScreen/>}></Route>

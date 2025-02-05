@@ -48,9 +48,9 @@ export default function LoginForm() {
     } 
 
     return(
-        <div className='verticalFlex' >
+        <div className='verticalFlex' style={{height:'100%'}}>
             <h2>Enter credentials below to login.</h2>
-            <div style={{width:'100%'}}>
+            <div style={{width:'100%',height:'100%'}}>
                 <form className='verticalFlex' onSubmit={loginUser}>
                     <Input style={{width:'15%'}} name="user" placeholder="Username" required></Input>
                     <Input style={{width:'15%'}} name="password" type="password" placeholder="Password" required></Input>

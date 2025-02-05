@@ -1,13 +1,8 @@
 body {
-  background-color: rgb(39, 48, 61);
+  height: 100%;
   margin: 0;
   font-family: 'Avenir';
   src: url('./style/fonts/Avenir.ttc');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }

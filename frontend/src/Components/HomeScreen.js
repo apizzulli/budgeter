@@ -14,7 +14,7 @@ export default function HomeScreen() {
     const { userId, setUserId } = useContext(BudgetContext);
 
     return(
-        <div className='verticalFlex' style={{marginTop:'2%', width:'100%'}}>
+        <div className='verticalFlex' style={{marginTop:'2%', height:'100vh',width:'100%'}}>
             <h1 style={{margin: 0}}>Welcome to Budgeter</h1>
             <h3>By Anthony Pizzulli.</h3>
             { 
@@ -25,7 +25,7 @@ export default function HomeScreen() {
                     </div>
                 )
                 :
-                (<div className='verticalFlex' style={{marginTop:'2%', height:'100%'}}>
+                (<div className='verticalFlex' style={{marginTop:'2%'}}>
                     <Button onClick={()=>{navigate("/viewBudgets")}} size='lg' variant='outlined' style={{fontFamily:'inherit',color:'inherit', marginBottom:'1%'}}>View Budgets</Button>
                     <Button onClick={()=>{navigate("/createBudgets")}} size='lg' variant='outlined'style={{fontFamily:'inherit',color:'inherit', marginBottom:'1%'}}>Create New Budget</Button>
                     <Button onClick={()=>{navigate("/addTransaction")}} size='lg' variant='outlined'style={{fontFamily:'inherit',color:'inherit'}}>Log a transaction</Button>

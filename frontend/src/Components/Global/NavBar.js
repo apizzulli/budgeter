@@ -30,8 +30,8 @@ export default function NavBar(){
     });
 
     return(
-            <div  style={{display:'flex',width:'100%', height:'5%', borderBottom: '.02rem solid', borderBottomColor:'white',justifyContent:'space-between'}}>
-                <div className="horizontalFlex" style={{marginLeft:'.25%'}}>
+            <div  style={{justifyContent:'space-between',display:'flex',width:'100%', height:'5%', borderBottom: '.02rem solid', borderBottomColor:'white'}}>
+                <div className="horizontalFlex" >
                     <Button onClick={()=>{navigate("/")}} style={{fontFamily:'inherit',color:'inherit'}} variant="text">Home</Button>
                     <Button onClick={()=>{navigate("/calendar-view")}} style={{fontFamily:'inherit',color:'inherit'}} variant="text" href="/calendar-view"> Calendar</Button>
                     <Button onClick={openMenu} style={{fontFamily:'inherit',color:'inherit'}}  variant="text" >Budgets</Button>
@@ -41,10 +41,10 @@ export default function NavBar(){
                         <MenuItem  className="menuItem" onClick={closeMenu}><Link style={{color:'black'}} to="/transactions">Transactions</Link></MenuItem>
                     </Menu>
                 </div>
-                <div style={{display:'flex', justifyContent:'center',alignItems:'center',flexDirection:'row',float:'right',fontSize:'12pt', width:'10%',marginRight:'.25%'}}>
-                    <div style={{marginRight:'2%'}}>{lightMode ? "Light Mode" : "Dark Mode" }</div>
-                    <ToggleOffIcon onClick={()=>{setLightMode(true)}} style={{display: lightMode ? 'none': 'block'}}></ToggleOffIcon>
-                    <ToggleOnIcon onClick={()=>{setLightMode(false)}} style={{color:'grey',display: lightMode ? 'block' : 'none' }}></ToggleOnIcon>
+                <div className="horizontalFlex" style={{width:'10%',marginRight:'2%'}}>
+                        <div style={{width:'100%'}}>{lightMode ? "Light Mode" : "Dark Mode" }</div>
+                        <ToggleOffIcon onClick={()=>{setLightMode(true)}} style={{marginLeft:'2%',display: lightMode ? 'none': 'block'}}></ToggleOffIcon>
+                        <ToggleOnIcon onClick={()=>{setLightMode(false)}} style={{marginLeft:'2%',color:'grey',display: lightMode ? 'block' : 'none' }}></ToggleOnIcon>
                 </div>
             </div>
     );

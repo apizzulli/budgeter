@@ -4,6 +4,7 @@ export async function newUser(userDTO) {
             headers: {
             "Accept":"application/json",
             "Content-Type":"application/json",
+            "Authorization": 'Basic ' + window.btoa(userDTO.username + ":" + userDTO.password)
         },
             method: "POST",
             body: JSON.stringify(userDTO)
@@ -13,6 +14,8 @@ export async function newUser(userDTO) {
             }
             else
                 return 0;
+        }).catch((error)=>{
+            return 0;
         })
 }
 export async function login (userDTO) {
@@ -22,6 +25,7 @@ export async function login (userDTO) {
         headers: {
         "Accept":"application/json",
         "Content-Type":"application/json",
+        "Authorization": 'Basic ' + window.btoa(userDTO.username + ":" + userDTO.password)
     },
         method: "POST",
         body: JSON.stringify(userDTO)

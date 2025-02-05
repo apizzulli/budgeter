@@ -61,7 +61,7 @@ export default function ViewTransactions() {
         }else if(percentage >= 30){
             textColor = "yellow";
         }  
-        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' id={lightMode ? '.card-light' : 'card-dark'} style={{width:'20%', height:'100%'}}>
+        return  <Card variant="outlined" key={"card"+i} className='verticalFlex' id={lightMode ? '.card-light' : 'card-dark'} style={{borderRadius: '15px',width:'20%', height:'100%'}}>
                     <div style={{color:'inherit'}}>{icon}</div>
                     <div style={{color:`${textColor}`, fontWeight:'bolder'}}>{percent.format(percentage)} spent</div>
                 </Card>;
@@ -83,10 +83,10 @@ export default function ViewTransactions() {
                 }
             </div>
             <h2>Transactions:</h2>  
-            <div style={{height:'75%',width:'40%'}}>
+            <div style={{height:'75%',width:'30%'}}>
                 {transactions.map((trans) => 
-                    <div id={lightMode ? '.card-light' : 'card-dark'} className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
-                        <div style={{paddingRight:'2%'}}>{dateStr(trans.date)}</div>
+                    <div id={lightMode ? '.card-light' : 'card-dark'} className='horizontalFlex'style={{borderRadius: '15px',marginTop:'2%',height:'8%',marginBottom:'5%'}}>
+                        <div style={{alignSelf:'flex-start',paddingRight:'2%'}}>{dateStr(trans.date)}</div>
                         <div>{pickIcon(trans.category)}</div>
                         <div style={{fontSize:'15pt',width:'25%'}}>{" -" + USDollar.format(trans.amount)}</div>
                     </div>

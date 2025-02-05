@@ -16,3 +16,11 @@
   font-family: 'Avenir Next Condensed' Helvetica, sans-serif normal;
   src: url('./fonts/AvenirNextCondensed.ttc');
 }
+body {
+  height: 100vh;
+  margin: 0;
+  font-family: 'Avenir';
+  src: url('./fonts/Avenir.ttc');
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
