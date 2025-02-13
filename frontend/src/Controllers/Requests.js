@@ -63,6 +63,8 @@ export async function newBudget(userId, newBudg) {
         else if(response.status == "400"){
             return 0;
         }
+    }).catch((error)=>{
+        return 0;
     })
 
 }
@@ -78,7 +80,7 @@ export async function editBudget(editedBudg, budgId) {
     }).then((response)=> {
         return response.json();
     }).catch((error)=>{
-        return "Server error - budget not saved";
+        return 0;
     })
 }
 export async function createTransaction (budgetId, transaction) {
@@ -92,7 +94,8 @@ export async function createTransaction (budgetId, transaction) {
         method: "POST",
         body: JSON.stringify(transaction)
     })
-    .then((response) => {return response.json()});
+    .then((response) => {return response.json()})
+    .catch((error)=> {return 0;});
 }
 export function getBudget(id){
     return fetch(`http://localhost:8080/getBudget/${id}`)

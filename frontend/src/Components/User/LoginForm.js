@@ -18,7 +18,19 @@ export default function LoginForm() {
     const [ serverError, setServerError ] = useState(false);
     const { budgets, setBudgets } = useContext(BudgetContext);
     const { userId, setUserId } = useContext(BudgetContext);
+    const { loggedIn, setLoggedIn } = useContext(BudgetContext);
 
+
+    function getRemaining(budget) { 
+        let total = budget.total;
+        if(budget.transactions){
+            budget.transactions.forEach((trans)=>{
+                total -= trans.amount;
+            })
+        }
+        budget.remaining = total;
+        console.log("H");
+    }
     async function loginUser (event) {
         event.preventDefault();
         let user = event.currentTarget.user.value;
@@ -37,13 +49,18 @@ export default function LoginForm() {
             return;
         }
         setUserId(response.id);
+        setLoggedIn(true);
         localStorage.setItem("userId",response.id);
         if(response.budgets.length == 0){
             //localStorage.setItem("budgets", response.json());
             navigate("/createBudget");
         }else{
             setBudgets(response.budgets);
+            response.budgets.forEach((budget)=>{
+                getRemaining(budget);
+            })
             localStorage.setItem("budgets",JSON.stringify(response.budgets));
+            navigate("viewBudgets");
         }
     } 
 

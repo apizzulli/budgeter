@@ -18,11 +18,12 @@ export const BudgetContext = createContext();
 function App() {
 
   const [ budgets, setBudgets ] = useState([]);
-  const [ userId, setUserId ] = useState(null);
+  const [ userId, setUserId ] = useState();
+  const [ loggedIn, setLoggedIn ] = useState(localStorage.getItem("userId"));
   const [ lightMode, setLightMode ] = useState(false);
 
   return (
-        <BudgetContext.Provider value={{lightMode, setLightMode, budgets, setBudgets, userId, setUserId}}>
+        <BudgetContext.Provider value={{loggedIn, setLoggedIn, lightMode, setLightMode, budgets, setBudgets, userId, setUserId}}>
           <div className= {lightMode ? "App-light" : "App-dark"} >
             <NavBar></NavBar> 
             <Routes>

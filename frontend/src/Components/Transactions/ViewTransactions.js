@@ -24,7 +24,7 @@ export default function ViewTransactions() {
     const { lightMode } = useContext(BudgetContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    const [ transactions, setTransactions ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).transactions);//.sort((a, b) => new Date(b.date) - new Date(a.date)));
     const [ remainingVals, setRemainingVals ] = useState(JSON.parse(localStorage.getItem("remainingVals")));
     const budgetName = useState(JSON.parse(localStorage.getItem("selectedBudget")).name);
 
@@ -75,24 +75,31 @@ export default function ViewTransactions() {
     return(
         <div className='verticalFlex' style={{width:'100%', height:'100%'}}>
             <h1>{budgetName}</h1>
-            <div className='horizontalFlex' style={{columnGap:'3%',width:'70%', height:'25%'}}>
-                {
-                    remainingVals.map((val, i)=>
-                        spendCard(val,i)
-                    )
-                }
-            </div>
-            <h2>Transactions:</h2>  
-            <div style={{height:'75%',width:'40%'}}>
-                {transactions.map((trans) => 
-                    <div id={lightMode ? '.card-light' : 'card-dark'} className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
-                        <div style={{paddingRight:'2%'}}>{dateStr(trans.date)}</div>
-                        <div>{pickIcon(trans.category)}</div>
-                        <div style={{fontSize:'15pt',width:'25%'}}>{" -" + USDollar.format(trans.amount)}</div>
+            {
+                transactions != undefined ? 
+                <div>
+                        <div className='horizontalFlex' style={{columnGap:'3%',width:'70%', height:'25%'}}>
+                        {
+                            remainingVals.map((val, i)=>
+                                spendCard(val,i)
+                            )
+                        }
                     </div>
-                )}
-                <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Add New Transaction</Button>
-            </div>
+                    <h2>Transactions:</h2>  
+                    <div style={{height:'75%',width:'40%'}}>
+                        {transactions.map((trans) => 
+                            <div id={lightMode ? '.card-light' : 'card-dark'} className='horizontalFlex'style={{marginTop:'2%',height:'8%',marginBottom:'5%'}}>
+                                <div style={{paddingRight:'2%'}}>{dateStr(trans.date)}</div>
+                                <div>{pickIcon(trans.category)}</div>
+                                <div style={{fontSize:'15pt',width:'25%'}}>{" -" + USDollar.format(trans.amount)}</div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                :
+                <h2>No Transactions to Display</h2>
+            }
+            <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Add New Transaction</Button>
         </div>
     );
 }

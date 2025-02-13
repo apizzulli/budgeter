@@ -23,8 +23,12 @@ export default function EditBudget(){
 
     const navigate = useNavigate();
     const [ anchorEl, setAnchorEl ] = useState(null);
-    const [ budget, setBudget ] = useState({});
+    const [ budget, setBudget ] = useState(JSON.parse(localStorage.getItem("selectedBudget")));
+
+    const [ hasBeenEdited, setHasBeenEdited ] = useState(false);
+    const [ noChanges, setNoChanges ] = useState(false);
     const [ serverError, setServerError ] = useState(false);
+
     const [ currentName, setCurrentName ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).name);
     const [ editName, setEditName ] = useState(false);
 
@@ -34,12 +38,34 @@ export default function EditBudget(){
     const [ currentCategories, setCurrentCategories ] = useState(JSON.parse(localStorage.getItem("selectedBudget")).categories);
     const [ editCategory, setEditCategory ] = useState(null);
 
-    const [ createBudgetView, toggleCreateBudgetView ] = useState(false);
-
     let open = Boolean(anchorEl);
     const location = useLocation();
 
+    const areCatsSame = () =>{
+        let c1 = Object.keys(currentCategories);
+        let c2 = Object.keys(budget.categories);
+        if(c1.length == c2.length){
+            for(let i = 0; i < c1.length; i++){
+                if(currentCategories[c1[i]] != budget.categories[c2[i]]){
+                    return false;
+                }    
+            }
+        }else{
+            return false;
+        }
+        return true;
+    }
     async function saveBudget(event) {
+        if(!hasBeenEdited){
+            let s = areCatsSame();
+            if(s){
+                setNoChanges(true);
+                setTimeout(() => {
+                    setNoChanges(false);
+                }, 3000); // Message will disappear after 3 seconds
+                return;
+            }
+        }
         event.preventDefault();
         console.log("editing...");
         let budgId = JSON.parse(localStorage.getItem("selectedBudget")).id;
@@ -60,21 +86,38 @@ export default function EditBudget(){
                 }
             }
             localStorage.setItem("budgets",JSON.stringify(budgets));
+            localStorage.removeItem("selectedBudget");
             navigate(-1);
             console.log("response");
         }else{
             setServerError(true);
+            setTimeout(() => {
+                setServerError(false);
+            }, 3000); // Message will disappear after 3 seconds
+            return;
         }
     }
 
     function nameDone() {
         setEditName(false);
-        setCurrentName(document.getElementById("nameInput").value);
+        let newName = document.getElementById("nameInput").value;
+        if(newName != currentName){
+            setCurrentName(newName);
+            if(!hasBeenEdited) {
+                setHasBeenEdited(true);
+            }
+        }
     }
 
     function totalDone() {
         setEditTotal(false);
-        setCurrentTotal(document.getElementById("totalInput").value);
+        let newTotal = document.getElementById("totalInput").value;
+        if(newTotal != currentTotal){
+            setCurrentTotal(newTotal);
+            if(!hasBeenEdited) {
+                setHasBeenEdited(true);
+            }
+        }
     }
 
     function categoriesDone(oldName,i) {
@@ -90,7 +133,7 @@ export default function EditBudget(){
                 newObj[newName] = newAm
             }
         })
-        setCurrentCategories(newObj)
+        setCurrentCategories(newObj);
     }
 
     function editCat(name) {
@@ -166,6 +209,7 @@ export default function EditBudget(){
             {categoriesDisplay}
             <Button onClick={saveBudget} variant = "outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:"6%"}}>Save Budget</Button>
             <h3 style={{visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder', fontSize:'xxl', marginTop:'4%'}}>Server error - budget not saved</h3>
+            <h3 style={{visibility: noChanges ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder', fontSize:'xxl', marginTop:'4%'}}>Nothing to save - please make changes first!</h3>
         </div>
     );
 }

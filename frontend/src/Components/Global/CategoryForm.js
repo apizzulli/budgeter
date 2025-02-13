@@ -63,20 +63,20 @@ export default function CategoryForm({savedCategories, saveCategories}) {
                         </div>
                     ));
     return(
-        <div style={{width: '100%', marginTop:'1%'}}>
+        <div style={{width: '100%'}}>
             <Menu id="categoryMenu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
                 {Object.keys(CATEGORIES).map((name,i)=><MenuItem id="menuItem" onClick={()=>menuClick(CATEGORIES[name])}>{CATEGORIES[name]}</MenuItem>)}
             </Menu>
             <div style={{display: 'flex', alignItems:'center', justifyContent:'center', width:'100%'}}>
                 <div style={{display: 'flex', alignItems:'center'}}>
-                    <h3>{"Category: "+menuItem}</h3>
+                    <h3>{"Name: "+menuItem}</h3>
                     <ArrowDropDownIcon style={{display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
                     <ArrowDropUpIcon style={{display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>
                 </div>
             </div>
             <form onSubmit={addCategory} style={{width:'100%', display:'flex', columnGap:'5%', justifyContent:'center',alignItems:'center'}}>
                 <Input type="text" name="catAmount" sx={{width:200, height: 20}} placeholder="Amount" required></Input>
-                <Button variant = "outlined" style={{fontFamily:'inherit',color:'inherit'}} type="submit">Add Category</Button>
+                <Button variant = "outlined" style={{fontFamily:'inherit',color:'inherit'}} type="submit">Done</Button>
             </form>
         </div>
     );

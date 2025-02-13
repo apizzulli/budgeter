@@ -11,14 +11,14 @@ export default function HomeScreen() {
     const navigate = useNavigate();
     const [ noUser, setNoUser ] = useState(false);
     const { budgets, setBudgets } = useContext(BudgetContext);
-    const { userId, setUserId } = useContext(BudgetContext);
+    const { loggedIn, setLoggedIn } = useContext(BudgetContext);
 
     return(
         <div className='verticalFlex' style={{marginTop:'2%', width:'100%'}}>
             <h1 style={{margin: 0}}>Welcome to Budgeter</h1>
             <h3>By Anthony Pizzulli.</h3>
             { 
-                userId == null ? 
+                !loggedIn ? 
                 (
                     <div style={{marginTop:'2%',width:'100%'}}>
                         <LoginForm/>

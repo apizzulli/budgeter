@@ -5,15 +5,13 @@ import Button from '@mui/joy/Button';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import '../../style/default_styles.css'
 import BudgetDetails from "./BudgetDetails";
-import { BudgetContext } from '../../App.js';
 import Stack from '@mui/material/Stack';
 
 export default function ViewBudgets(props){
     const navigate = useNavigate();
     const location = useLocation();
     const [ detailedView, setDetailedView ] = useState(null);
-    const { budgets, setBudgets } = useContext(BudgetContext);
-    const { userId, setUserId } = useContext(BudgetContext);
+    const [ budgets, setBudgets ] = useState(JSON.parse(localStorage.getItem("budgets")));
 
     const USDollar = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -39,6 +37,10 @@ export default function ViewBudgets(props){
     }
 
     function transactions(budget) {
+        if(budget.transactions == undefined){
+            navigate("/addTransaction");
+            return;
+        }
         let vals = [];
         Object.keys(budget.categories).map((cat)=>{
             let spent = 0;
@@ -65,32 +67,24 @@ export default function ViewBudgets(props){
     }
 
     const budgetView = (budget) => {
-        console.log("Budget view "+budget);
-        let categories = budget.categories;
-        console.log("Budget view:\nTransactions: "+transactions[0]);
+        let categories = null;
+        if(budget.categories != undefined){
+            categories = Object.keys(budget.categories);
+        }
         return(
             <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px',height:'100%'}}>
-                <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}}  ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon onClick={()=>{goToEdit(budget)}} style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
+                <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}}  ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon onClick={()=>goToEdit(budget)} style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
                 <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
-                {   
-                    Object.keys(budget.categories).length > 0 ? 
-                    <div> 
-                        <h3>Categories:</h3>
-                        {Object.keys(budget.categories).map((name) => <div key={name} style={{width:'100%'}}>{name + ": $" + categories[name]}</div>)}
-                        {budget.transactions.length > 0 ? 
-                            (
-                                <div>
-                                    <h3>Recent Transactions:</h3>
-                                    {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
-                                </div>)
-                            :
-                            <h3>No Recent Transactions</h3>
-                        }
-                        <Button variant="outlined" onClick={()=>transactions(budget)} style={{color:'inherit',fontFamily:'inherit',marginBottom:'5%',marginTop:'10%'}}>Go to Transactions</Button>
-                    </div>
-                    :
-                    <div></div>
-                }
+                    {budget.transactions != undefined && budget.transactions.length > 0 ? 
+                        (
+                            <div>
+                                <h3>Recent Transactions:</h3>
+                                {budget.transactions.slice(0,3).map((trans) => <div style={{width:'100%'}}>{dateStr(trans.date) + ": " + trans.category + ", " + USDollar.format(trans.amount)}</div>)}
+                            </div>)
+                        :
+                        <h3>No Recent Transactions</h3>
+                    }
+                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{color:'inherit',fontFamily:'inherit',marginBottom:'5%',marginTop:'5%'}}>Go to Transactions</Button>
             </div>
         );
     }
@@ -99,10 +93,10 @@ export default function ViewBudgets(props){
         <div style={{height:'100vh'}}>
             <h1>Your Budgets:</h1>
             {   
-                localStorage.getItem("budgets") != undefined ? 
+                budgets != undefined ? 
                 <div className="verticalFlex">
                     {
-                        JSON.parse(localStorage.getItem("budgets")).map((budget,i) => 
+                        budgets.map((budget,i) => 
                             <div key={i} className={"verticalFlex"}>
                                 {budgetView(budget)}
                             </div>)
