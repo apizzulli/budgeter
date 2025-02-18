@@ -46,9 +46,10 @@ export default function LoginForm() {
             setServerError(true);
             return;
         }
-        setUserId(response.id);
+        setUserId(response.userId);
         setLoggedIn(true);
-        localStorage.setItem("userId",response.id);
+        localStorage.setItem("userId",response.userId);
+        localStorage.setItem("jwt",response.token.value);
         if(response.budgets.length == 0){
             //localStorage.setItem("budgets", response.json());
             navigate("/createBudget");

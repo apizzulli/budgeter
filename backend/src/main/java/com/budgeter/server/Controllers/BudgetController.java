@@ -1,4 +1,5 @@
 package com.budgeter.server.Controllers;
+import com.budgeter.server.Config.JwtService;
 import com.budgeter.server.Entities.Budget;
 import com.budgeter.server.Entities.User;
 import com.budgeter.server.Services.BudgetService;
@@ -21,10 +22,14 @@ public class BudgetController {
     //private final BudgetService budgetService;
     private final BudgetRepository budgetRepo;
     private final UserRepository userRepo;
+    private final BudgetService budgetService;
+    private final JwtService jwtService;
 
-    public BudgetController(BudgetRepository budgetRepo, UserRepository userRepo){
+    public BudgetController(BudgetRepository budgetRepo, UserRepository userRepo, BudgetService budgetService, JwtService jwtService){
         this.budgetRepo = budgetRepo;
         this.userRepo = userRepo;
+        this.budgetService = budgetService;
+        this.jwtService = jwtService;
     }
 
     @CrossOrigin(origins="http://localhost:3000")
@@ -38,13 +43,12 @@ public class BudgetController {
         return new ResponseEntity<>(newBudget, HttpStatus.CREATED);
     }
 
-    @CrossOrigin(origins="http://localhost:3000")
-    @GetMapping(value="/getBudgets/{userId}")
-    public List<Budget> getBudgets(@PathVariable(value="userId") Long userId) {
-        Optional<User> userOp = userRepo.findById(userId);
-        User user = userOp.get();
-        return user.getBudgets();
-    }
+//    @CrossOrigin(origins="http://localhost:3000")
+//    @GetMapping(value="/getBudgets")
+//    public List<Budget> getBudgets(@RequestBody User user) {
+//        List<Budget> budgets = budgetService.getBudgets(user);
+//        return budgets;
+//    }
 
     @CrossOrigin(origins="http://localhost:3000")
     @PatchMapping(value="/update/name/{budgetId}")

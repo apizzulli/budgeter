@@ -1,5 +1,6 @@
 package com.budgeter.server.Controllers;
 import com.budgeter.server.Config.JwtService;
+import com.budgeter.server.Config.JwtToken;
 import com.budgeter.server.DTO.LoginDTO;
 import com.budgeter.server.DTO.UserDTO;
 import com.budgeter.server.Entities.Budget;
@@ -18,7 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequestMapping("/user")
 @RestController
 public class UserController {
 
@@ -44,26 +45,25 @@ public class UserController {
 //        }
 //    }
 
-   // @CrossOrigin(origins="http://localhost:3000")
+    public JwtToken generateToken(User user){
+        return new JwtToken(jwtService.generateToken(user),jwtService.getExpirationTime());
+    }
+    @CrossOrigin(origins="http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UserDTO login){
-
-        User authenticatedUser = userService.login(login);
-
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
+        User user = userService.login(login);
         LoginDTO dto = new LoginDTO();
-        dto.setBudgets(null);
-        dto.setId(authenticatedUser.getId());
-        dto.setToken(jwtToken);
-        dto.setExpiresIn(jwtService.getExpirationTime());
+        dto.setBudgets(user.getBudgets());
+        dto.setUserId(user.getId());
+        dto.setToken(generateToken(user));
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/createAccount")
-    public ResponseEntity<User> createAccount(@RequestBody UserDTO input) {
-        User user = userService.createUser(input);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Object> createAccount(@RequestBody UserDTO info) {
+        User newUser = userService.createUser(info);
+        userService.login(info);
+        return ResponseEntity.ok(new LoginDTO(newUser.getId(), null,generateToken(newUser)));
     }
 
 

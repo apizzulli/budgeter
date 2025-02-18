@@ -1,38 +1,38 @@
 package com.budgeter.server.DTO;
 
+import com.budgeter.server.Config.JwtToken;
 import com.budgeter.server.Entities.Budget;
 
 import java.util.List;
 
 public class LoginDTO {
 
-    private Long id;
+    private Long userId;
+    private JwtToken token;
     private List<Budget> budgets;
-    private long expiresIn;
-    private String token;
 
-    public LoginDTO(){}
-    public LoginDTO(Long id, List<Budget> budgets, long expiresIn, String token) {
-        this.id = id;
-        this.budgets = budgets;
-        this.expiresIn = expiresIn;
+    public LoginDTO(Long userId, List<Budget> budgets,JwtToken token) {
+        this.userId = userId;
         this.token = token;
+        this.budgets = budgets;
     }
 
-    public String getToken() {
+    public LoginDTO(){}
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public JwtToken getToken() {
         return token;
     }
 
-    public void setToken(String token){
+    public void setToken(JwtToken token) {
         this.token = token;
-    }
-
-    public long getExpiresIn(){
-        return this.expiresIn;
-    }
-
-    public void setExpiresIn(long expiresIn) {
-        this.expiresIn = expiresIn;
     }
 
     public List<Budget> getBudgets() {
@@ -43,11 +43,4 @@ public class LoginDTO {
         this.budgets = budgets;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

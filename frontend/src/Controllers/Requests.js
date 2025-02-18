@@ -17,7 +17,7 @@ export async function newUser(userDTO) {
 }
 export async function login (userDTO) {
     let budgets = null;
-    return fetch('http://localhost:8080/login',
+    return fetch('http://localhost:8080/user/login',
     {
         headers: {
         "Accept":"application/json",
