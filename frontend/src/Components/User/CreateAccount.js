@@ -21,7 +21,7 @@ export default function CreateAccount() {
     return(
         <div className="verticalFlex">
             <h2>Enter an email and password for your account below</h2>
-                <div style={{width:'35%'}}>
+                <div style={{width:'15%'}}>
                     <form onSubmit={createAccount}>
                         <Input name="user" placeholder="Email" required></Input>
                         <Input type="password" name="password" style={{marginTop:'7%'}} placeholder="Password" required></Input>

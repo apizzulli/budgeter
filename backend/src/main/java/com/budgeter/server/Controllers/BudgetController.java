@@ -28,14 +28,14 @@ public class BudgetController {
     }
 
     @CrossOrigin(origins="http://localhost:3000")
-    @PostMapping(value="/createBudget/{id}")
-    public String createBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
+    @PostMapping(value="/create/{id}")
+    public ResponseEntity<Budget> createBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
         Optional<User> userOp = userRepo.findById(userId);
         User user = userOp.get();
         User.addBudget(user,newBudget);
         userRepo.save(user);
         //budgetRepo.save(newBudget);
-        return "Created budget successfully: "+ newBudget.toString();
+        return new ResponseEntity<>(newBudget, HttpStatus.CREATED);
     }
 
     @CrossOrigin(origins="http://localhost:3000")

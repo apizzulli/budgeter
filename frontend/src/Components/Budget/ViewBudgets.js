@@ -37,6 +37,7 @@ export default function ViewBudgets(props){
     }
 
     function transactions(budget) {
+        localStorage.setItem("selectedBudget",JSON.stringify(budget));
         if(budget.transactions == undefined){
             navigate("/addTransaction");
             return;
@@ -51,7 +52,6 @@ export default function ViewBudgets(props){
             })
             vals.push({[cat]: spent/budget.categories[cat]});
         })
-        localStorage.setItem("selectedBudget",JSON.stringify(budget));
         localStorage.setItem("remainingVals",JSON.stringify(vals));
         navigate("/transactions");
     }
@@ -72,7 +72,7 @@ export default function ViewBudgets(props){
             categories = Object.keys(budget.categories);
         }
         return(
-            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'45%', borderRadius: '15px',height:'100%'}}>
+            <div className="verticalFlex" style={{backgroundColor:'rgb(146, 159, 178, 0.130)',paddingTop: '3%', paddingBottom: '3%',marginBottom:'4%',width:'25%', borderRadius: '15px',height:'100%'}}>
                 <Stack alignItems="center" direction="row" style={{marginLeft:'7px', cursor:'pointer'}}  ><h2 style={{margin:'0'}}>{budget.name}</h2><ModeEditIcon onClick={()=>goToEdit(budget)} style={{marginLeft:'7px'}} ></ModeEditIcon></Stack>
                 <h2 style={{margin:0}}>{USDollar.format(budget.remaining) + " remaining"}</h2>
                     {budget.transactions != undefined && budget.transactions.length > 0 ? 
@@ -84,7 +84,7 @@ export default function ViewBudgets(props){
                         :
                         <h3>No Recent Transactions</h3>
                     }
-                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{color:'inherit',fontFamily:'inherit',marginBottom:'5%',marginTop:'5%'}}>Go to Transactions</Button>
+                    <Button variant="outlined" onClick={()=>transactions(budget)} style={{color:'inherit',fontFamily:'inherit',marginBottom:'5%',marginTop:'2%'}}>Go to Transactions</Button>
             </div>
         );
     }

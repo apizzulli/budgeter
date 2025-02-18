@@ -28,11 +28,10 @@ export default function Transactions() {
     }
 
     async function addTransaction(event){
-        // event.preventDefault();
-        // setAnchorEl(event.currentTarget);
-        //let newTrans = new Transaction(selectedCat, document.getElementById("amountInput").value, document.getElementById("dateInput").value, document.getElementById("descInput").value);
-    //    / let newBudg = await createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
-        //localStorage.setItem("selectedBudget",newBudg);
+        event.preventDefault();
+        let newTrans = new Transaction(selectedCat, document.getElementById("amountInput").value, document.getElementById("dateInput").value, document.getElementById("descInput").value);
+        let newBudg = await createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
+        localStorage.setItem("selectedBudget",newBudg);
     }
 
     const handleMenuOpen =(event)=>{
@@ -44,33 +43,34 @@ export default function Transactions() {
         setAnchorEl(null);
     }
 
-    const budgetMenu = () => {
-        return (
-            <div className="horizontalFlex" style={{width:'50%'}}>
-            <div>
-                <div style={{width:'50%'}}>{budget != undefined ? budget.name : "None Selected"}</div>
-                <ArrowDropDownIcon style={{width:'50%',display: anchorElB === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
-                <ArrowDropUpIcon style={{width:'50%',display:anchorElB === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>    
-            </div>
-                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
-                    {Object.keys(budget.categories).map((cat)=><MenuItem onClick={()=>menuChoice(cat)}>{cat}</MenuItem>)}
-                </Menu>
-            </div>
-        );
-    }
+    window.addEventListener('mouseup', function(e) {
+        var x = document.querySelector('#categoryMenu');
+        if (e.target != document.querySelector("#categoryMenuItem") && Boolean(anchorEl)) {
+            setAnchorEl(null);
+        }
+    });
 
     function handleMenuClose(){}
     return(
         <div className="verticalFlex">
             <h1>Add a Transaction</h1>
-            <form className="verticalFlex" onSubmit={addTransaction}>
-                <h2>Budget: </h2>
-                <div className="horizontalFlex" style={{width:'15%', marginBottom: '.5%'}}>
-                    <div style={{width:'50%'}} onClick={addTransaction}>Category: </div>
+            {
+                budget != null ? 
+                <h2>{budget.name}</h2>
+                :
+                <div className="horizontalFlex" style={{width:'50%'}}>
+                    Select a Budget
+                    <ArrowDropDownIcon style={{width:'50%',display: anchorElB === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
+                    <ArrowDropUpIcon style={{width:'50%',display:anchorElB === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>    
+                </div>
+            }
+                {
+                    <div className="horizontalFlex" style={{width:'15%', marginBottom: '.5%'}}>
+                    <div style={{width:'50%'}} >Category: </div>
                     <div className="horizontalFlex" style={{width:'50%'}}>
                         {
                             budget.categories != undefined ? 
-                            <div>
+                            <div className='horizontalFlex' id="categoryMenus">
                                 <div style={{width:'50%'}}>{selectedCat}</div>
                                 <ArrowDropDownIcon style={{width:'50%',display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
                                 <ArrowDropUpIcon style={{width:'50%',display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>    
@@ -82,12 +82,13 @@ export default function Transactions() {
                     {
                         budget != undefined && budget.categories != undefined ? 
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} anchorOrigin={{vertical:'bottom', horizontal:'center'}}>   
-                            {Object.keys(budget.categories).map((cat)=><MenuItem onClick={()=>menuChoice(cat)}>{cat}</MenuItem>)}
+                            {Object.keys(budget.categories).map((cat)=><MenuItem id="categoryMenuItem" onClick={()=>menuChoice(cat)}>{cat}</MenuItem>)}
                         </Menu>
                         :
                         <Menu>No Categories Available</Menu>
                         }
-                </div>
+                    </div>
+                }
                 <div className="horizontalFlex" style={{width:'15%', marginBottom: '.5%'}}>
                     <div style={{width:'50%'}}>Amount: </div>
                     $<Input id="amountInput" name="amount" type="text" placeholder="0.00" style={{width:'50%'}}></Input>
@@ -101,7 +102,6 @@ export default function Transactions() {
                     <Input id="descInput" name="desc" style={{width:'50%',height:'80%'}}></Input>
                 </div>
                 <Button onClick={addTransaction} variant="outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:'1%', width:'5%'}}>Save</Button>
-            </form>
         </div>
     )
 }

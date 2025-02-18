@@ -16,7 +16,6 @@ export default function HomeScreen() {
     return(
         <div className='verticalFlex' style={{marginTop:'2%', width:'100%'}}>
             <h1 style={{margin: 0}}>Welcome to Budgeter</h1>
-            <h3>By Anthony Pizzulli.</h3>
             { 
                 !loggedIn ? 
                 (

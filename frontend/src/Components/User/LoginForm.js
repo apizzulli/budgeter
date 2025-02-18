@@ -33,12 +33,10 @@ export default function LoginForm() {
     }
     async function loginUser (event) {
         event.preventDefault();
-        let user = event.currentTarget.user.value;
-        let pass =  event.currentTarget.password.value;
         let userId = null;
         const userDTO = {
-            username: event.currentTarget.user.value,
-            password: event.currentTarget.password.value
+            username: document.getElementById("user").value,
+            password: document.getElementById("password").value
         };
         const response = await login(userDTO);
         if(!response){
@@ -67,16 +65,17 @@ export default function LoginForm() {
     return(
         <div className='verticalFlex' >
             <h2>Enter credentials below to login.</h2>
-            <div style={{width:'100%'}}>
-                <form className='verticalFlex' onSubmit={loginUser}>
-                    <Input style={{width:'15%'}} name="user" placeholder="Username" required></Input>
-                    <Input style={{width:'15%'}} name="password" type="password" placeholder="Password" required></Input>
-                    <div style={{width: '100%',visibility: noUser ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>No such user</div>
-                    <div style={{width: '100%',visibility: serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>Server error</div>
-                    <Button type = "submit" variant="outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Login</Button>
-                </form>
+            <div style={{width:'100%',height:'55%'}}>
+                <div className='verticalFlex' style={{height:'55%', alignItems:'center'}}>
+                    <Input style={{width:'15%'}} id="user" name="user" placeholder="Username" required></Input>
+                    <Input style={{width:'15%'}} id="password" name="password" type="password" placeholder="Password" required></Input>
+                    <div style={{height:'60%',width: '100%',visibility: noUser || serverError ? "visible" : "hidden", color:"#f55656", fontWeight:'bolder'}}>
+                        { noUser ? "No such user" : "Server error"}
+                    </div>
+                    <Button onClick={loginUser} variant="outlined" style={{marginTop:'0%',fontFamily:'inherit',color:'inherit'}}>Login</Button>
+                </div>
             </div>
-            <h3>Don't have an account? Create one <a href="/createAccount" style={{textDecoration: "underline"}}>here</a>.</h3>
+            <h3 style={{marginTop:'2%'}}>Don't have an account? Create one <a href="/createAccount" style={{textDecoration: "underline"}}>here</a>.</h3>
         </div>
     )
 }

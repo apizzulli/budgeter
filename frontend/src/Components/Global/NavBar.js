@@ -35,7 +35,6 @@ export default function NavBar(){
 
     window.addEventListener('mouseup', function(e) {
         var x = document.querySelector('#navBarMenu');
-        console.log("s");
         if (e.target != document.querySelector(".menuItem") && Boolean(anchorEl)) {
             closeMenu();
         }
@@ -43,7 +42,6 @@ export default function NavBar(){
 
     window.addEventListener('mouseup', function(e) {
         var x = document.querySelector('#profileMenu');
-        console.log("s");
         if (e.target != document.querySelector(".menuItem") && Boolean(profileAnchor)) {
             closeProfileMenu();
         }
@@ -75,7 +73,7 @@ export default function NavBar(){
                         <MenuItem  className="menuItem" onClick={closeMenu}><Link style={{color:'black'}} to="/transactions">Transactions</Link></MenuItem>
                     </Menu>
                 </div>
-                <div style={{display:'flex', flexDirection:'row',fontSize:'12pt',marginRight:'.5%',width:'8%', justifyContent:'flex-end'}}>
+                <div style={{display:'flex', flexDirection:'row',fontSize:'12pt',marginRight:'.5%',width:'10%', justifyContent:'flex-end'}}>
                     {lightMode ? "Light Mode" : "Dark Mode" }
                     <ToggleOffIcon onClick={()=>{setLightMode(true)}} style={{marginLeft:'6%',display: lightMode ? 'none': 'block'}}></ToggleOffIcon>
                     <ToggleOnIcon onClick={()=>{setLightMode(false)}} style={{marginLeft:'6%',color:'grey',display: lightMode ? 'block' : 'none' }}></ToggleOnIcon>
