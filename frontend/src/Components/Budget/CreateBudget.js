@@ -38,7 +38,7 @@ export default function CreateBudget(){
             categories: object
         };
         let userId = localStorage.getItem("userId");
-        const response = await newBudget(userId, newBudg);
+        const response = await newBudget(userId, newBudg, localStorage.getItem("jwt"));
         console.log("response in comp = "+response);
         if(!response){
             setServerFail(true);
@@ -46,7 +46,7 @@ export default function CreateBudget(){
         else{
             budgets.push(response.budget);
             setBudgets(budgets);
-            navigate("/viewBudgets");
+            navigate("/budgets/view");
         }
         //setcreateBudget(true);
     }

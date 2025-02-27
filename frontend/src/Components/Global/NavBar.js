@@ -68,15 +68,15 @@ export default function NavBar(){
                     <Button onClick={()=>{navigate("/calendar-view")}} style={{fontFamily:'inherit',color:'inherit'}} variant="text" href="/calendar-view"> Calendar</Button>
                     <Button onClick={openMenu} style={{fontFamily:'inherit',color:'inherit'}}  variant="text" >Budgets</Button>
                     <Menu id="navBarMenu" anchorEl={anchorEl} open={Boolean(anchorEl)}  anchorOrigin={{vertical:'bottom'}}>   
-                        <MenuItem className="menuItem" onClick={closeMenu} ><Link style={{color:'black'}} to="/viewBudgets">View Existing Budgets</Link></MenuItem>
-                        <MenuItem className="menuItem" onClick={closeMenu}><Link style={{color:'black'}} to="/createBudget">Create New Budget</Link></MenuItem>
+                        <MenuItem className="menuItem" onClick={closeMenu} ><Link style={{color:'black'}} to="/budgets/view">View Existing Budgets</Link></MenuItem>
+                        <MenuItem className="menuItem" onClick={closeMenu}><Link style={{color:'black'}} to="/budgets/create">Create New Budget</Link></MenuItem>
                         <MenuItem  className="menuItem" onClick={closeMenu}><Link style={{color:'black'}} to="/transactions">Transactions</Link></MenuItem>
                     </Menu>
                 </div>
-                <div style={{display:'flex', flexDirection:'row',fontSize:'12pt',marginRight:'.5%',width:'10%', justifyContent:'flex-end'}}>
+                <div style={{display:'flex', flexDirection:'row',fontSize:'12pt',marginRight:'1.5%',width:'15%', justifyContent:'flex-end'}}>
                     {lightMode ? "Light Mode" : "Dark Mode" }
-                    <ToggleOffIcon onClick={()=>{setLightMode(true)}} style={{marginLeft:'6%',display: lightMode ? 'none': 'block'}}></ToggleOffIcon>
-                    <ToggleOnIcon onClick={()=>{setLightMode(false)}} style={{marginLeft:'6%',color:'grey',display: lightMode ? 'block' : 'none' }}></ToggleOnIcon>
+                    <ToggleOffIcon onClick={()=>{setLightMode(true)}} style={{marginLeft:'3%',display: lightMode ? 'none': 'block'}}></ToggleOffIcon>
+                    <ToggleOnIcon onClick={()=>{setLightMode(false)}} style={{marginLeft:'3%',color:'grey',display: lightMode ? 'block' : 'none' }}></ToggleOnIcon>
                     <AccountCircleIcon onClick={openProfile} style={{marginLeft:'6%',visibility: loggedIn ? 'visible' : 'hidden'}}></AccountCircleIcon>
                     <ProfileMenu></ProfileMenu>
                 </div>

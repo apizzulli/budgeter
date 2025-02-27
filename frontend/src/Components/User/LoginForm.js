@@ -52,14 +52,14 @@ export default function LoginForm() {
         localStorage.setItem("jwt",response.token.value);
         if(response.budgets.length == 0){
             //localStorage.setItem("budgets", response.json());
-            navigate("/createBudget");
+            navigate("/budgets/create");
         }else{
             setBudgets(response.budgets);
             response.budgets.forEach((budget)=>{
                 getRemaining(budget);
             })
             localStorage.setItem("budgets",JSON.stringify(response.budgets));
-            navigate("viewBudgets");
+            navigate("/budgets/view");
         }
     } 
 

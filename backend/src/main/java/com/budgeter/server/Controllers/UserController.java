@@ -24,13 +24,11 @@ import java.util.List;
 public class UserController {
 
     private final JwtService jwtService;
-    private final UserRepository userRepo;
     private final UserService userService;
 
-    public UserController(JwtService jwtService, UserService userService, UserRepository userRepo) {
+    public UserController(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
         this.userService = userService;
-        this.userRepo = userRepo;
     }
 
 //    @PostMapping("/generateToken")
@@ -56,7 +54,7 @@ public class UserController {
         dto.setBudgets(user.getBudgets());
         dto.setUserId(user.getId());
         dto.setToken(generateToken(user));
-        return ResponseEntity.ok(dto);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PostMapping("/createAccount")

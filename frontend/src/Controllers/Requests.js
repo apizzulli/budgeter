@@ -45,10 +45,11 @@ export async function login (userDTO) {
     //     }
     //});
 }
-export async function newBudget(userId, newBudg) {
+export async function newBudget(userId, newBudg, token) {
     return fetch(`http://localhost:8080/budgets/create/${userId}`,
     {
         headers: {
+        "Authorization": `Bearer ${token}`,
         "Accept":"application/json",
         "Content-Type":"application/json",
     },
@@ -84,18 +85,24 @@ export async function editBudget(editedBudg, budgId) {
     })
 }
 export async function createTransaction (budgetId, transaction) {
+    let token = localStorage.getItem("jwt");
     console.log("adding transaction");
     return fetch(`http://localhost:8080/budgets/transactions/add/${budgetId}`,
     {
         headers: {
-        "Accept":"application/json",
-        "Content-Type":"application/json",
+            "Access-Control-Allow-Origin" : "*",
+            "Authorization": `Bearer ${token}`,
+            "Accept":"application/json",
+            "Content-Type":"application/json",
     },
-        method: "POST",
+        methods: ["POST", "OPTIONS"],
         body: JSON.stringify(transaction)
     })
     .then((response) => {return response.json()})
-    .catch((error)=> {return 0;});
+    .catch((error)=> {
+        console.log("error = "+error);
+        return 0;
+    });
 }
 export function getBudget(id){
     return fetch(`http://localhost:8080/getBudget/${id}`)

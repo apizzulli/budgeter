@@ -13,7 +13,7 @@ export default function CreateAccount() {
             password: event.currentTarget.password.value
         };
         const response = await newUser(userDTO);
-        navigate("/createBudget");
+        navigate("/budgets/create");
         // .then(response => response.json())
         // .then(data => console.log(data))
         // .catch(error => console.error(error));

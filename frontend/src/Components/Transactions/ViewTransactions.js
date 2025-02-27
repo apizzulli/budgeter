@@ -76,7 +76,7 @@ export default function ViewTransactions() {
         <div className='verticalFlex' style={{width:'100%', height:'100%'}}>
             <h1>{budgetName}</h1>
             {
-                transactions != undefined ? 
+                transactions != undefined && transactions.length > 0? 
                 <div>
                         <div className='horizontalFlex' style={{columnGap:'3%',width:'70%', height:'25%'}}>
                         {
@@ -99,7 +99,7 @@ export default function ViewTransactions() {
                 :
                 <h2>No Transactions to Display</h2>
             }
-            <Button variant="outlined" onClick={()=>navigate("/addTransaction")} style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Add New Transaction</Button>
+            <Button variant="outlined" onClick={()=>navigate("/transactions/add")} style={{fontFamily:'inherit',color:'inherit', marginTop:'1%'}}>Add New Transaction</Button>
         </div>
     );
 }

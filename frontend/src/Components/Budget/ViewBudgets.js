@@ -28,7 +28,7 @@ export default function ViewBudgets(props){
     }
 
     function editClick(budget){
-        navigate("/editBudget", { state: { budget }, updateBudget: {updateBudgets} });
+        navigate("/budgets/edit", { state: { budget }, updateBudget: {updateBudgets} });
     }
 
     function updateBudgets(newBudgets) {
@@ -39,7 +39,7 @@ export default function ViewBudgets(props){
     function transactions(budget) {
         localStorage.setItem("selectedBudget",JSON.stringify(budget));
         if(budget.transactions == undefined){
-            navigate("/addTransaction");
+            navigate("/transactions/add");
             return;
         }
         let vals = [];
@@ -63,7 +63,7 @@ export default function ViewBudgets(props){
 
     function goToEdit(budget) {
         localStorage.setItem("selectedBudget",JSON.stringify(budget));
-        navigate("/editBudget");
+        navigate("/budgets/edit");
     }
 
     const budgetView = (budget) => {

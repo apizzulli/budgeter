@@ -29,13 +29,13 @@ function App() {
             <Routes>
               <Route path = "/" element = {<HomeScreen/>}></Route>
               <Route path="/calendar-view" element={<CalendarView/>}></Route>
-              <Route path="/createBudget" element={<CreateBudget/>}></Route>
-              <Route path="/editBudget" element={<EditBudget/>}></Route>
-              <Route path="/viewBudgets" element={<ViewBudgets/>}></Route>
+              <Route path="/budgets/create" element={<CreateBudget/>}></Route>
+              <Route path="/budgets/edit" element={<EditBudget/>}></Route>
+              <Route path="/budgets/view" element={<ViewBudgets/>}></Route>
               <Route path="/createAccount" element={<CreateAccount/>}></Route>
               <Route path="/budgetDetails" element={<BudgetDetails/>}></Route>
               <Route path="/transactions" element={<Transactions/>}></Route>
-              <Route path="/addTransaction" element={<AddTransactions/>}></Route>
+              <Route path="/transactions/add" element={<AddTransactions/>}></Route>
             </Routes>
           </div>
         </BudgetContext.Provider>

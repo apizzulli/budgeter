@@ -17,6 +17,7 @@ import static org.springframework.http.ResponseEntity.badRequest;
 
 @RestController
 @RequestMapping("/budgets")
+@CrossOrigin(origins = "*")
 public class BudgetController {
 
     //private final BudgetService budgetService;
@@ -32,15 +33,19 @@ public class BudgetController {
         this.jwtService = jwtService;
     }
 
-    @CrossOrigin(origins="http://localhost:3000")
     @PostMapping(value="/create/{id}")
-    public ResponseEntity<Budget> createBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
-        Optional<User> userOp = userRepo.findById(userId);
-        User user = userOp.get();
-        User.addBudget(user,newBudget);
-        userRepo.save(user);
-        //budgetRepo.save(newBudget);
+    public ResponseEntity<Budget> newBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
+        budgetService.create(newBudget, userId);
         return new ResponseEntity<>(newBudget, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value="/getAll/{id}")
+    public ResponseEntity<Object> getAll( @PathVariable(value="id") Long userId){
+        List<Budget> budgets = budgetService.getAll(userId);
+        if(budgets.isEmpty()){
+            return new ResponseEntity<>("No budgets", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(budgets, HttpStatus.OK);
     }
 
 //    @CrossOrigin(origins="http://localhost:3000")
@@ -50,7 +55,6 @@ public class BudgetController {
 //        return budgets;
 //    }
 
-    @CrossOrigin(origins="http://localhost:3000")
     @PatchMapping(value="/update/name/{budgetId}")
     public ResponseEntity<?> updateName(@PathVariable(value="budgetId") Long budgetId, @RequestBody String newName) {
         Optional<Budget> budg = budgetRepo.findById(budgetId);
@@ -60,7 +64,6 @@ public class BudgetController {
         return ResponseEntity.ok("Budget updated with new name \"" + newName + "\"");
     }
 
-    @CrossOrigin(origins="http://localhost:3000")
     @GetMapping(value="/update/total/{budgetId}")
     public ResponseEntity<Budget> updateTotal(@PathVariable(value="budgetId") Long budgetId, @RequestBody double newTotal) {
         Optional<Budget> budg = budgetRepo.findById(budgetId);

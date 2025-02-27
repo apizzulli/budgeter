@@ -30,8 +30,10 @@ export default function Transactions() {
     async function addTransaction(event){
         event.preventDefault();
         let newTrans = new Transaction(selectedCat, document.getElementById("amountInput").value, document.getElementById("dateInput").value, document.getElementById("descInput").value);
+        let budgId = JSON.parse(localStorage.getItem("selectedBudget")).id;
         let newBudg = await createTransaction((JSON.parse(localStorage.getItem("selectedBudget"))).id, newTrans);
-        localStorage.setItem("selectedBudget",newBudg);
+        console.log("newbug");
+        //localStorage.setItem("selectedBudget",newBudg);
     }
 
     const handleMenuOpen =(event)=>{
@@ -70,10 +72,10 @@ export default function Transactions() {
                     <div className="horizontalFlex" style={{width:'50%'}}>
                         {
                             budget.categories != undefined ? 
-                            <div className='horizontalFlex' id="categoryMenus">
-                                <div style={{width:'50%'}}>{selectedCat}</div>
-                                <ArrowDropDownIcon style={{width:'50%',display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
-                                <ArrowDropUpIcon style={{width:'50%',display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>    
+                            <div style={{width:'100%', justifyContent:'flex-end'}} className='horizontalFlex' id="categoryMenus">
+                                <div style={{width:'75%'}}>{selectedCat}</div>
+                                <ArrowDropDownIcon style={{marginLeft:'1%',display: anchorEl === null ? 'block': 'none'}}onClick={handleMenuOpen}></ArrowDropDownIcon>
+                                <ArrowDropUpIcon style={{marginLeft:'1%',display:anchorEl === null ? 'none': 'block'}}onClick={handleMenuClose}></ArrowDropUpIcon>    
                             </div>
                             :
                             <div>None Available</div>
@@ -99,7 +101,7 @@ export default function Transactions() {
                 </div>
                 <div className="verticalFlex" style={{width:'30%', marginBottom: '1%',height:'100% '}}>
                     <div style={{width:'50%', marginBottom:'2%'}}>Description: </div>
-                    <Input id="descInput" name="desc" style={{width:'50%',height:'80%'}}></Input>
+                    <Input id="descInput" name="desc" style={{width:'50%',height:'70px'}}></Input>
                 </div>
                 <Button onClick={addTransaction} variant="outlined" style={{fontFamily:'inherit',color:'inherit', marginTop:'1%', width:'5%'}}>Save</Button>
         </div>

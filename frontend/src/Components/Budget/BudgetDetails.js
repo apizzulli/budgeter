@@ -24,7 +24,7 @@ export default function BudgetDetails({budget}) {
                 Recent Transactions: 
                 {Object.keys(budget.transactions).map((transaction) => <div key={transaction.name} style={{width:'100%'}}>{transaction.name + ": $" }</div>)}
             </div>
-            <Button style={{fontFamily:'inherit',color:'inherit'}} onClick={()=>{navigate("/addTransaction")}}>Add a Transaction</Button>
+            <Button style={{fontFamily:'inherit',color:'inherit'}} onClick={()=>{navigate("/transactions/add")}}>Add a Transaction</Button>
         </div>
     );
 }

@@ -15,10 +15,21 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String roles;
+    @JoinColumn(name="user_id") @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) List<Budget> budgets;
+
+    public User(){}
+    public User(Long id, String name, String username, String password, String roles) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -54,17 +65,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @JoinColumn(name="user_id") @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) List<Budget> budgets;
-
-    public User(){}
-    public User(Long id, String name, String username, String password, String roles) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -86,6 +86,12 @@ public class User implements UserDetails {
     }
 
     public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public void addBudget(Budget newBudget) {
+        List<Budget> budgets = this.budgets;
+        budgets.add(newBudget);
         this.budgets = budgets;
     }
 
