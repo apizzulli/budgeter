@@ -46,7 +46,7 @@ public class UserController {
     public JwtToken generateToken(User user){
         return new JwtToken(jwtService.generateToken(user),jwtService.getExpirationTime());
     }
-    @CrossOrigin(origins="http://localhost:3000")
+    //@CrossOrigin(origins="http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UserDTO login){
         User user = userService.login(login);

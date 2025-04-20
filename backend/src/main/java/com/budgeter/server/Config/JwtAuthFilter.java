@@ -1,5 +1,6 @@
 package com.budgeter.server.Config;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
+
+import static org.apache.catalina.util.RequestUtil.getRequestURL;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -39,12 +43,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    ) throws ServletException, IOException, AuthenticationException {
         final String authHeader = request.getHeader("Authorization");
+        String url =request.getRequestURL().toString();
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+        if(url.contains("user/login")){
+            filterChain.doFilter(request,response);//filterChain.doFilter(request, response);
             return;
+        }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("No Authorization Token Provided");
+            return;
+
+////            if(request.getRequestURL().contains)
+////                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+////                response.getWriter().write("The Provided Token is Expired");
+////                return;
+//            filterChain.doFilter(request, response);
+//            return;
         }
 
         try {
@@ -69,8 +86,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (Exception exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception);
+//        } catch (Exception exception) {
+//            handlerExceptionResolver.resolveException(request, response, null, exception);
+//            System.out.println("JwtAuthFilter Exception: "+exception);
+        }catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("The Provided Token is Expired");
+            return;
+        }catch (AuthenticationException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("No Authorization Token Provided");
+            return;
         }
     }
 }

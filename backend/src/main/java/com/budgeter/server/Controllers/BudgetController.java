@@ -33,6 +33,10 @@ public class BudgetController {
         this.jwtService = jwtService;
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "Hello from /budgets/test";
+    }
     @PostMapping(value="/create/{id}")
     public ResponseEntity<Budget> newBudget(@RequestBody Budget newBudget, @PathVariable(value="id") Long userId) {
         budgetService.create(newBudget, userId);

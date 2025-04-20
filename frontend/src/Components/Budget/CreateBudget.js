@@ -30,6 +30,7 @@ export default function CreateBudget(){
     const { userId, setUserId } = useContext(BudgetContext);
 
     async function createBudget (event) {
+        let currentBudgets = JSON.parse(localStorage.getItem("budgets"));
         event.preventDefault();
         let object = savedCategories.reduce((obj, item) => Object.assign(obj, { [item.name]: item.amount }), {});
         const newBudg = {
@@ -38,14 +39,14 @@ export default function CreateBudget(){
             categories: object
         };
         let userId = localStorage.getItem("userId");
-        const response = await newBudget(userId, newBudg, localStorage.getItem("jwt"));
-        console.log("response in comp = "+response);
-        if(!response){
+        const created = await newBudget(userId, newBudg, localStorage.getItem("jwt"));
+        if(!created){
             setServerFail(true);
         }
         else{
-            budgets.push(response.budget);
-            setBudgets(budgets);
+            currentBudgets.push(created);
+            localStorage.setItem("budgets",JSON.stringify(currentBudgets));
+            //setBudget());
             navigate("/budgets/view");
         }
         //setcreateBudget(true);

@@ -59,7 +59,7 @@ export async function newBudget(userId, newBudg, token) {
     .then((response) => {
         console.log("newBudget in controller returns "+response.status);
         if(response.status == "201"){
-            return 1;
+            return response.json();
         }
         else if(response.status == "400"){
             return 0;
@@ -95,7 +95,7 @@ export async function createTransaction (budgetId, transaction) {
             "Accept":"application/json",
             "Content-Type":"application/json",
     },
-        methods: ["POST", "OPTIONS"],
+        method: "POST",
         body: JSON.stringify(transaction)
     })
     .then((response) => {return response.json()})

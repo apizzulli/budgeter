@@ -12,12 +12,12 @@ public class Transaction {
     private @Id @GeneratedValue Long id;
     private String category;
     private Double amount;
-    private Date date;
+    private String date;
     private String description;
 
     public Transaction() {}
 
-    public Transaction(Long id, String category, Double amount, Date date, String description) {
+    public Transaction(Long id, String category, Double amount, String date, String description) {
         this.id = id;
         this.category = category;
         this.amount = amount;
@@ -49,11 +49,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
